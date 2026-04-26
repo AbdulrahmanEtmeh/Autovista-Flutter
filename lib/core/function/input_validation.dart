@@ -13,6 +13,12 @@ inputValidation(String value, int min, int max, String type) {
     }
   }
 
+  if (type == 'phone') {
+    if (!isValidPhoneNumber(value)) {
+      return 'Not valid phone number';
+    }
+  }
+
   if (value.isEmpty) {
     return "This field can't be empty";
   }
@@ -24,4 +30,9 @@ inputValidation(String value, int min, int max, String type) {
   if (value.length > max) {
     return "This field lenght can't be more than $max characters";
   }
+}
+
+bool isValidPhoneNumber(String value) {
+  final normalized = value.replaceAll(RegExp(r'[\s\-\(\)]'), '');
+  return RegExp(r'^(\+?\d{9,15})$').hasMatch(normalized);
 }

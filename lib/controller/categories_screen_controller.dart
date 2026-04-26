@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:graduation_project/core/class/status_request.dart';
+import 'package:graduation_project/core/network/api_response.dart';
 import 'package:graduation_project/core/services/my_services.dart';
 import 'package:graduation_project/data/source/remote/categories/categories_data.dart';
 
@@ -54,14 +55,18 @@ class CategoriesScreenControllerImp extends CategoriesScreenController {
     var response = await categoriesData.getCarsCategories(catId);
     // ignore: avoid_print
     print('====================== Controller $response');
-    statusRequest = handlingData(response);
-    if (StatusRequest.success == statusRequest) {
-      if (response['status'] == true) {
-        cars.addAll(response['data']['cars']);
-      } else if (response['status'] == false) {
-        statusRequest = StatusRequest.failure;
-      }
-    }
+    statusRequest = handlingApiResponse(response);
+    response.when(
+      success: (ApiSuccess<Map<String, dynamic>> successResponse) {
+        final responseData = successResponse.data;
+        if (responseData['status'] == true) {
+          cars.addAll(responseData['data']['cars']);
+        } else if (responseData['status'] == false) {
+          statusRequest = StatusRequest.failure;
+        }
+      },
+      failure: (ApiFailure<Map<String, dynamic>> failureResponse) {},
+    );
     update();
   }
 

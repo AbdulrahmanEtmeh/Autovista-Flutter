@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:graduation_project/core/class/status_request.dart';
 import 'package:graduation_project/core/function/auth_fail_alert.dart';
+import 'package:graduation_project/core/function/handling_data.dart';
+import 'package:graduation_project/core/network/api_response.dart';
 import 'package:graduation_project/data/source/remote/auth/forgetPassword/reset_password_data.dart';
 
 import '../../../core/constant/app_routes.dart';
-import '../../../core/function/handling_data.dart';
 
 abstract class ResetPasswordController extends GetxController {
   resetPassword();
@@ -40,20 +41,26 @@ class ResetPasswordControllerImp extends ResetPasswordController {
     if (formData!.validate()) {
       statusRequest = StatusRequest.loading;
       update();
-      var response = await resetPasswordData.postData(email!, password.text);
+      var response =
+          await resetPasswordData.postData(email!.trim(), password.text);
       // ignore: avoid_print
       print('======================== Controller $response');
-      statusRequest = handlingData(response);
-      if (StatusRequest.success == statusRequest) {
-        if (response['status'] == true) {
-          Get.offNamed(
-            AppRoutes.successResetPassword,
-          );
-        } else if (response['status'] == false) {
-          authFailAlert(response['message']);
-          statusRequest = StatusRequest.failure;
-        }
-      }
+      statusRequest = handlingApiResponse(response);
+      response.when(
+        success: (ApiSuccess<Map<String, dynamic>> s) {
+          if (s.data['status'] == true) {
+            Get.offNamed(AppRoutes.successResetPassword);
+          } else if (s.data['status'] == false) {
+            authFailAlert(s.data['message']);
+            statusRequest = StatusRequest.failure;
+          }
+        },
+        failure: (ApiFailure<Map<String, dynamic>> f) {
+          if (f.message != null && f.statusRequest == StatusRequest.failure) {
+            authFailAlert(f.message!);
+          }
+        },
+      );
       update();
     }
   }

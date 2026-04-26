@@ -12,12 +12,12 @@ class CustomOtp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OtpTextField(
-        numberOfFields: 5,
+        numberOfFields: 6,
         margin: const EdgeInsets.symmetric(horizontal: 8),
         borderRadius: BorderRadius.circular(20),
         borderColor: AppColors.greyShadow,
         borderWidth: 5,
-        fieldWidth: 55,
+        fieldWidth: 45,
         fieldHeight: 100,
         //set to true to show as box or false to show as dash
         showFieldAsBox: true,

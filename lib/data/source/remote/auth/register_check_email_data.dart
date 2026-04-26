@@ -1,14 +1,24 @@
 import '../../../../core/constant/app_links.dart';
-import '../../../../core/class/crud.dart';
+import '../../../../core/network/api_client.dart';
+import '../../../../core/network/api_response.dart';
 
 class RegisterCheckEmailData {
-  Crud crud;
-  RegisterCheckEmailData(this.crud);
-  postData(String email, String verifyCode) async {
-    var response = await crud.postData(AppLinks.registerCheckEmail, {
-      'email': email,
-      'code': verifyCode,
-    });
-    return response.fold((l) => l, (r) => r);
+  final ApiClient apiClient;
+
+  RegisterCheckEmailData(this.apiClient);
+
+  Future<ApiResponse<Map<String, dynamic>>> postData(
+    String email,
+    String verifyCode,
+  ) async {
+    final normalizedCode = int.tryParse(verifyCode.trim()) ?? verifyCode.trim();
+
+    return apiClient.post(
+        AppLinks.registerCheckEmail,
+        {
+          'email': email.trim(),
+          'code': normalizedCode,
+        },
+        isJson: true);
   }
 }

@@ -1,6 +1,7 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:graduation_project/core/class/status_request.dart';
+import 'package:graduation_project/core/constant/app_colors.dart';
 import 'package:graduation_project/core/constant/app_image_asset.dart';
 import 'package:lottie/lottie.dart';
 
@@ -17,27 +18,13 @@ class HandlingDataView extends StatelessWidget {
             child: Lottie.asset(AppImageAsset.loadingLottie,
                 width: 250, height: 250))
         : statusRequest == StatusRequest.offlineFailure
-            ? const Center(
-                child: Text(
-                  'Offline',
-                ),
-              )
+            ? const _StatusMessage(message: 'Offline')
             : statusRequest == StatusRequest.serverFailure
-                ? Center(
-                    child: Text(
-                      'server_failure'.tr,
-                      style: TextStyle(
-                        fontSize: Get.width * 0.05,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  )
+                ? _StatusMessage(message: 'server_failure'.tr)
+                : statusRequest == StatusRequest.serverException
+                    ? _StatusMessage(message: 'server_failure'.tr)
                 : statusRequest == StatusRequest.failure
-                    ? const Center(
-                        child: Text(
-                          'No Data',
-                        ),
-                      )
+                    ? const _StatusMessage(message: 'No Data')
                     : widget;
   }
 }
@@ -55,25 +42,35 @@ class HandlingDataRequest extends StatelessWidget {
             child: Lottie.asset(AppImageAsset.loadingLottie,
                 width: Get.width * 0.6, height: Get.height * 0.3))
         : statusRequest == StatusRequest.offlineFailure
-            ? Center(
-                child: Text(
-                  'offline_failure'.tr,
-                  style: TextStyle(
-                    fontSize: Get.width * 0.05,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              )
+            ? _StatusMessage(message: 'offline_failure'.tr)
             : statusRequest == StatusRequest.serverFailure
-                ? Center(
-                    child: Text(
-                      'server_failure'.tr,
-                      style: TextStyle(
-                        fontSize: Get.width * 0.05,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  )
+                ? _StatusMessage(message: 'server_failure'.tr)
+                : statusRequest == StatusRequest.serverException
+                    ? _StatusMessage(message: 'server_failure'.tr)
                 : widget;
+  }
+}
+
+class _StatusMessage extends StatelessWidget {
+  final String message;
+
+  const _StatusMessage({required this.message});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Text(
+          message,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: AppColors.primaryWhite,
+            fontSize: Get.width * 0.05,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
   }
 }

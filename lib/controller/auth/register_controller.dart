@@ -4,6 +4,7 @@ import 'package:graduation_project/core/class/status_request.dart';
 import 'package:graduation_project/core/constant/app_routes.dart';
 import 'package:graduation_project/core/function/auth_fail_alert.dart';
 import 'package:graduation_project/core/function/handling_data.dart';
+import 'package:graduation_project/core/network/api_response.dart';
 import 'package:graduation_project/data/source/remote/auth/register_data.dart';
 
 abstract class RegisterController extends GetxController {
@@ -14,8 +15,9 @@ abstract class RegisterController extends GetxController {
 class RegisterControllerImp extends RegisterController {
   GlobalKey<FormState> formState = GlobalKey<FormState>();
 
-  late TextEditingController userName;
+  late TextEditingController name;
   late TextEditingController email;
+  late TextEditingController phone;
   late TextEditingController password;
   // late TextEditingController passwordVerify;
 
@@ -41,21 +43,34 @@ class RegisterControllerImp extends RegisterController {
     if (formData!.validate()) {
       statusRequest = StatusRequest.loading;
       update();
-      var response =
-          await registerData.postData(userName.text, email.text, password.text);
+      var response = await registerData.postData(
+        name.text,
+        email.text,
+        phone.text,
+        password.text,
+      );
       print('============================= Controller $response');
-      statusRequest = handlingData(response);
-      if (statusRequest == StatusRequest.success) {
-        if (response['status'] == true) {
-          Get.offNamed(
-            AppRoutes.registerCheckEmail,
-            arguments: {'email': email.text},
-          );
-        } else if (response['status'] == false) {
-          authFailAlert(response['message']);
-          statusRequest = StatusRequest.failure;
-        }
-      }
+      statusRequest = handlingApiResponse(response);
+      response.when(
+        success: (ApiSuccess<Map<String, dynamic>> successResponse) {
+          final responseData = successResponse.data;
+          if (responseData['status'] == true) {
+            Get.offNamed(
+              AppRoutes.registerCheckEmail,
+              arguments: {'email': email.text},
+            );
+          } else if (responseData['status'] == false) {
+            authFailAlert(responseData['message']);
+            statusRequest = StatusRequest.failure;
+          }
+        },
+        failure: (ApiFailure<Map<String, dynamic>> failureResponse) {
+          if (failureResponse.message != null &&
+              failureResponse.statusRequest == StatusRequest.failure) {
+            authFailAlert(failureResponse.message!);
+          }
+        },
+      );
       update();
     } else {}
   }
@@ -67,8 +82,9 @@ class RegisterControllerImp extends RegisterController {
 
   @override
   void onInit() {
-    userName = TextEditingController();
+    name = TextEditingController();
     email = TextEditingController();
+    phone = TextEditingController();
     password = TextEditingController();
     // passwordVerify = TextEditingController();
     super.onInit();
@@ -76,8 +92,9 @@ class RegisterControllerImp extends RegisterController {
 
   @override
   void dispose() {
-    userName.dispose();
+    name.dispose();
     email.dispose();
+    phone.dispose();
     password.dispose();
     // passwordVerify.dispose();
 

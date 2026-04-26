@@ -55,7 +55,7 @@ class RegisterScreen extends StatelessWidget {
                                     return inputValidation(
                                         val!, 4, 20, 'username');
                                   },
-                                  controller: controller.userName,
+                                  controller: controller.name,
                                   labelText: 'user name'.tr,
                                   icon: Icons.person,
                                 ),
@@ -68,6 +68,16 @@ class RegisterScreen extends StatelessWidget {
                                   keyboardType: TextInputType.emailAddress,
                                   labelText: 'email'.tr,
                                   icon: Icons.email_outlined,
+                                ),
+                                AuthCustomField(
+                                  validator: (val) {
+                                    return inputValidation(
+                                        val!, 8, 15, 'phone');
+                                  },
+                                  controller: controller.phone,
+                                  keyboardType: TextInputType.phone,
+                                  labelText: 'phone'.tr,
+                                  icon: Icons.phone_android_outlined,
                                 ),
                                 GetBuilder<RegisterControllerImp>(
                                   builder: (controller) => AuthCustomField(
@@ -82,19 +92,6 @@ class RegisterScreen extends StatelessWidget {
                                     icon: Icons.remove_red_eye,
                                   ),
                                 ),
-                                // GetBuilder<RegisterControllerImp>(
-                                //   builder: (controller) => AuthCustomField(
-                                //     validator: (val) {
-                                //       return inputValidation(
-                                //           val!, 6, 24, 'password');
-                                //     },
-                                //     controller: controller.passwordVerify,
-                                //     labelText: 'confirm password'.tr,
-                                //     obscureText: controller.passwordVerifyState,
-                                //     iconOnTap: controller.showPasswordVerify,
-                                //     icon: Icons.remove_red_eye,
-                                //   ),
-                                // ),
                                 SizedBox(height: Get.height * 0.015),
                                 MainButton(
                                   buttonText: 'Register'.tr,

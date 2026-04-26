@@ -1,10 +1,12 @@
 class AppLinks {
   // ======================= Server ==========================
-  static const String serverOld = 'http://10.0.2.2:8000/api';
-  static const String server = 'http://192.168.100.23:8001/api';
+  static const String serverEmulator = 'http://10.0.2.2:8000/api';
+  static const String serverRealDevice = 'http://192.168.100.23:8001/api';
+  static const String server = 'https://dev-projects.it.com/api';
   // ======================= Images Links =====================
-  static const String imageRootOld = 'http://10.0.2.2:8000';
-  static const String imageRoot = 'http://192.168.100.23:8001';
+  static const String imageRootEmulator = 'http://10.0.2.2:8000';
+  static const String imageRootRealDevice = 'http://192.168.100.23:8001';
+  static const String imageRoot = 'https://dev-projects.it.com';
   // ======================= Auth Links ========================
   static const String register = '$server/register';
   static const String login = '$server/login';
@@ -18,6 +20,8 @@ class AppLinks {
   static const String resetPassword = '$server/reset-password';
   // ======================= Home Links ===========================
   static const String home = '$server/home';
+  static const String cars = '$server/cars';
+  static const String styles = '$server/styles';
   // ======================= Categories Links ======================
   static const String categories = '$server/styles';
   // ======================= Brands =============================

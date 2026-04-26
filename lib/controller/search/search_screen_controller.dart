@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:graduation_project/core/constant/app_routes.dart';
+import 'package:graduation_project/core/network/api_response.dart';
 import 'package:graduation_project/data/source/remote/search/search_data.dart';
 
 import '../../core/class/status_request.dart';
@@ -49,16 +50,20 @@ class SearchScreenControllerImp extends SearchScreenController {
     );
     // ignore: avoid_print
     print('====================== Controller $response');
-    statusRequest = handlingData(response);
-    if (StatusRequest.success == statusRequest) {
-      if (response['status'] == true) {
-        listCars.clear();
-        List responseBody = response['data']['cars'];
-        listCars.addAll(responseBody.map((e) => CarModel.fromJson(e)));
-      } else if (response['status'] == false) {
-        statusRequest = StatusRequest.failure;
-      }
-    }
+    statusRequest = handlingApiResponse(response);
+    response.when(
+      success: (ApiSuccess<Map<String, dynamic>> successResponse) {
+        final responseData = successResponse.data;
+        if (responseData['status'] == true) {
+          listCars.clear();
+          List responseBody = responseData['data']['cars'];
+          listCars.addAll(responseBody.map((e) => CarModel.fromJson(e)));
+        } else if (responseData['status'] == false) {
+          statusRequest = StatusRequest.failure;
+        }
+      },
+      failure: (ApiFailure<Map<String, dynamic>> failureResponse) {},
+    );
     update();
   }
 

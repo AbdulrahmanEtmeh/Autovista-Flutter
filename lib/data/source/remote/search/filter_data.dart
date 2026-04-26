@@ -1,12 +1,13 @@
 import 'package:graduation_project/core/constant/app_links.dart';
-
-import '../../../../core/class/crud.dart';
+import 'package:graduation_project/core/network/api_client.dart';
+import 'package:graduation_project/core/network/api_response.dart';
 
 class FilterData {
-  Crud crud;
-  FilterData(this.crud);
+  final ApiClient apiClient;
 
-  getData(
+  FilterData(this.apiClient);
+
+  Future<ApiResponse<Map<String, dynamic>>> getData(
     String brandName,
     String name,
     String gearType,
@@ -25,10 +26,11 @@ class FilterData {
       'rent': rent.toString(),
     };
 
-    var response = await crud.postDataHeaderFilter(
+    return apiClient.post(
       AppLinks.filter,
       body,
+      isJson: true,
+      authenticated: true,
     );
-    return response.fold((l) => l, (r) => r);
   }
 }

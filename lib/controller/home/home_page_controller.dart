@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:graduation_project/core/class/status_request.dart';
 import 'package:graduation_project/core/constant/app_routes.dart';
 import 'package:graduation_project/core/function/handling_data.dart';
+import 'package:graduation_project/core/network/api_response.dart';
 import 'package:graduation_project/core/services/my_services.dart';
 import 'package:graduation_project/data/model/car_model.dart';
 import 'package:graduation_project/data/source/remote/home/home_data.dart';
@@ -31,8 +32,47 @@ class HomePageControllerImp extends HomePageController {
   @override
   initialData() {
     userName = myServices.sharedPreferences.getString('userName') ?? '';
-    // search = TextEditingController();
     getData();
+    getStyles();
+    getBrands();
+  }
+
+  Future<void> getStyles() async {
+    var response = await homeData.getStyles();
+    print('====================== Styles Controller $response');
+    response.when(
+      success: (ApiSuccess<Map<String, dynamic>> successResponse) {
+        final responseData = successResponse.data;
+        if (responseData['status'] == true) {
+          carCategories.clear();
+          final stylesList = responseData['data'];
+          if (stylesList is List) {
+            carCategories.addAll(stylesList);
+          }
+        }
+      },
+      failure: (ApiFailure<Map<String, dynamic>> failureResponse) {},
+    );
+    update();
+  }
+
+  Future<void> getBrands() async {
+    var response = await homeData.getBrands();
+    print('====================== Brands Controller $response');
+    response.when(
+      success: (ApiSuccess<Map<String, dynamic>> successResponse) {
+        final responseData = successResponse.data;
+        if (responseData['status'] == true) {
+          carBrands.clear();
+          final brandsList = responseData['data'];
+          if (brandsList is List) {
+            carBrands.addAll(brandsList);
+          }
+        }
+      },
+      failure: (ApiFailure<Map<String, dynamic>> failureResponse) {},
+    );
+    update();
   }
 
   @override
@@ -54,16 +94,36 @@ class HomePageControllerImp extends HomePageController {
         await homeData.getData(myServices.sharedPreferences.getInt('id')!);
     // ignore: avoid_print
     print('====================== Controller $response');
-    statusRequest = handlingData(response);
-    if (StatusRequest.success == statusRequest) {
-      if (response['status'] == true) {
-        cars.addAll(response['data']['cars']);
-        carCategories.addAll(response['data']['styles']);
-        carBrands.addAll(response['data']['brands']);
-      } else if (response['status'] == false) {
-        statusRequest = StatusRequest.failure;
-      }
-    }
+    statusRequest = handlingApiResponse(response);
+    response.when(
+      success: (ApiSuccess<Map<String, dynamic>> successResponse) {
+        final responseData = successResponse.data;
+        if (responseData['status'] == true) {
+          cars.clear();
+
+          final carsList = responseData['data'];
+          if (carsList is List) {
+            for (final item in carsList) {
+              if (item is Map<String, dynamic>) {
+                final normalizedItem = Map<String, dynamic>.from(item);
+
+                // Keep old UI compatibility until categories/brands migration.
+                if (normalizedItem.containsKey('is_fav') &&
+                    !normalizedItem.containsKey('is_favorite')) {
+                  final isFav = normalizedItem['is_fav'] == true;
+                  normalizedItem['is_favorite'] = isFav ? 1 : 0;
+                }
+
+                cars.add(normalizedItem);
+              }
+            }
+          }
+        } else if (responseData['status'] == false) {
+          statusRequest = StatusRequest.failure;
+        }
+      },
+      failure: (ApiFailure<Map<String, dynamic>> failureResponse) {},
+    );
     update();
   }
 

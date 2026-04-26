@@ -1,19 +1,26 @@
 import 'package:graduation_project/core/constant/app_links.dart';
-
-import '../../../../core/class/crud.dart';
+import 'package:graduation_project/core/network/api_client.dart';
+import 'package:graduation_project/core/network/api_response.dart';
 
 class RegisterData {
-  Crud crud;
-  RegisterData(this.crud);
-  postData(String userName, String email, String password) async {
-    var response = await crud.postData(
+  final ApiClient apiClient;
+
+  RegisterData(this.apiClient);
+
+  Future<ApiResponse<Map<String, dynamic>>> postData(
+    String name,
+    String email,
+    String phone,
+    String password,
+  ) async {
+    return apiClient.post(
       AppLinks.register,
       {
-        'userName': userName,
+        'name': name,
         'email': email,
+        'phone': phone,
         'password': password,
       },
     );
-    return response.fold((l) => l, (r) => r);
   }
 }

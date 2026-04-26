@@ -7,6 +7,7 @@ import '../../core/constant/app_image_asset.dart';
 import '../../core/constant/app_routes.dart';
 import '../../core/function/auth_fail_alert.dart';
 import '../../core/function/handling_data.dart';
+import '../../core/network/api_response.dart';
 import '../../core/services/my_services.dart';
 import '../../core/services/auth_services.dart';
 import '../../data/source/remote/auth/firebase/notification_data.dart';
@@ -64,28 +65,44 @@ class LoginControllerImp extends LoginController {
       var response = await loginData.postData(email.text, password.text);
       // ignore: avoid_print
       print('======================== Controller $response');
-      statusRequest = handlingData(response);
-      if (StatusRequest.success == statusRequest) {
-        if (response['status'] == true) {
-          myServices.sharedPreferences
-              .setInt('id', response['data']['0']['id']);
-          myServices.sharedPreferences
-              .setString('userName', response['data']['0']['user_name']);
-          myServices.sharedPreferences
-              .setString('email', response['data']['0']['email']);
-          myServices.sharedPreferences.setString('step', '2');
-          myServices.sharedPreferences
-              .setString('token', response['data']['token']);
+      statusRequest = handlingApiResponse(response);
+      response.when(
+        success: (ApiSuccess<Map<String, dynamic>> successResponse) async {
+          final responseData = successResponse.data;
+          if (responseData['status'] == true) {
+            final user = responseData['data']['user'];
+            final accessToken = responseData['data']['access_token'];
 
-          Get.offNamed(
-            AppRoutes.home,
-          );
-          await sendFcmToken();
-        } else if (response['status'] == false) {
-          authFailAlert(response['message']);
-          statusRequest = StatusRequest.failure;
-        }
-      }
+            myServices.sharedPreferences.setInt('id', user['id']);
+            myServices.sharedPreferences
+                .setString('userName', user['name'] ?? '');
+            myServices.sharedPreferences
+                .setString('email', user['email'] ?? '');
+            myServices.sharedPreferences.setString('step', '2');
+            myServices.sharedPreferences.setString('token', accessToken ?? '');
+
+            Get.offNamed(
+              AppRoutes.home,
+            );
+            await sendFcmToken();
+          } else if (responseData['status'] == false) {
+            authFailAlert(responseData['message']);
+            statusRequest = StatusRequest.failure;
+          }
+        },
+        failure: (ApiFailure<Map<String, dynamic>> failureResponse) {
+          print('[LoginController] API Failure');
+          print('[LoginController] Status: ${failureResponse.statusRequest}');
+          print('[LoginController] Message: ${failureResponse.message}');
+          print('[LoginController] StatusCode: ${failureResponse.statusCode}');
+          print('[LoginController] Error: ${failureResponse.error}');
+
+          if (failureResponse.message != null &&
+              failureResponse.statusRequest == StatusRequest.failure) {
+            authFailAlert(failureResponse.message!);
+          }
+        },
+      );
       update();
     } else {}
   }
