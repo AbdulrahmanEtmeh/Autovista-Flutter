@@ -25,26 +25,20 @@ class AuthCustomField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(bottom: Get.height * 0.03),
-      decoration: BoxDecoration(
-        color: AppColors.primaryWhite,
-        borderRadius: BorderRadius.circular(Get.width * 0.03),
-        boxShadow: const [
-          BoxShadow(
-            color: AppColors.greyShadow,
-            blurRadius: 5,
-            spreadRadius: 1,
-          ),
-        ],
-      ),
+      
       child: TextFormField(
+        
         validator: validator,
         controller: controller,
         obscureText: obscureText == null || obscureText == false ? false : true,
         keyboardType: keyboardType,
         decoration: InputDecoration(
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(
-              horizontal: Get.width * 0.075, vertical: Get.height * 0.015),
+           enabledBorder: const UnderlineInputBorder(
+      borderSide: BorderSide(color: Colors.grey),
+    ),
+       
+          // contentPadding: EdgeInsets.symmetric(
+          //     horizontal: Get.width * 0.075, vertical: Get.height * 0.015),
           labelText: labelText,
           labelStyle: Theme.of(context)
               .textTheme
