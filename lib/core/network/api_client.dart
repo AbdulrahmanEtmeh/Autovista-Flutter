@@ -115,8 +115,10 @@ class ApiClient {
       return <String, dynamic>{};
     }
 
+    final normalizedBody = body.trim();
+
     try {
-      final decoded = jsonDecode(body);
+      final decoded = jsonDecode(normalizedBody);
       if (decoded is Map<String, dynamic>) {
         return decoded;
       }
@@ -125,6 +127,22 @@ class ApiClient {
       }
       return <String, dynamic>{'data': decoded};
     } catch (e) {
+      final recoveredJson = _extractJsonPayload(normalizedBody);
+      if (recoveredJson != null) {
+        try {
+          final decoded = jsonDecode(recoveredJson);
+          if (decoded is Map<String, dynamic>) {
+            return decoded;
+          }
+          if (decoded is Map) {
+            return Map<String, dynamic>.from(decoded);
+          }
+          return <String, dynamic>{'data': decoded};
+        } catch (_) {
+          // Continue to fallback error response below.
+        }
+      }
+
       // If JSON parsing fails, it's likely an HTML error page
       print('[ApiClient] JSON Parse Error: $e');
       print('[ApiClient] Raw Response: $body');
@@ -143,6 +161,26 @@ class ApiClient {
         'rawResponse': body,
       };
     }
+  }
+
+  String? _extractJsonPayload(String responseBody) {
+    final objectStart = responseBody.indexOf('{');
+    final arrayStart = responseBody.indexOf('[');
+
+    var jsonStart = -1;
+    if (objectStart != -1 && arrayStart != -1) {
+      jsonStart = objectStart < arrayStart ? objectStart : arrayStart;
+    } else if (objectStart != -1) {
+      jsonStart = objectStart;
+    } else if (arrayStart != -1) {
+      jsonStart = arrayStart;
+    }
+
+    if (jsonStart == -1) {
+      return null;
+    }
+
+    return responseBody.substring(jsonStart).trim();
   }
 
   StatusRequest _mapStatusCode(int statusCode) {

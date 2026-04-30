@@ -16,17 +16,32 @@ class ProductCard extends GetView<HomePageControllerImp> {
 
   @override
   Widget build(BuildContext context) {
+    final photos = carModel.photos;
+    final hasPhoto = photos != null && photos.isNotEmpty;
+    final imageUrl = hasPhoto ? '${AppLinks.imageRoot}/${photos.first}' : null;
+
     return LayoutBuilder(
       builder: (context, constraints) => Stack(
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(15),
-            child: CachedNetworkImage(
-              imageUrl: '${AppLinks.imageRoot}/${carModel.photos![0]}',
-              width: Get.width - Get.width * 0.05,
-              height: Get.height * 0.25,
-              fit: BoxFit.fill,
-            ),
+            child: imageUrl != null
+                ? CachedNetworkImage(
+                    imageUrl: imageUrl,
+                    width: Get.width - Get.width * 0.05,
+                    height: Get.height * 0.25,
+                    fit: BoxFit.fill,
+                  )
+                : Container(
+                    width: Get.width - Get.width * 0.05,
+                    height: Get.height * 0.25,
+                    color: Colors.grey.shade300,
+                    child: const Icon(
+                      Icons.directions_car,
+                      size: 40,
+                      color: Colors.black54,
+                    ),
+                  ),
           ),
           NameContainer(
             constraints: constraints,
@@ -35,7 +50,7 @@ class ProductCard extends GetView<HomePageControllerImp> {
           Positioned(
             right: 0,
             child: RatingContainer(
-                constraints: constraints, rating: carModel.rating!),
+                constraints: constraints, rating: carModel.rating ?? 0),
           ),
           Positioned(
             bottom: 0,
