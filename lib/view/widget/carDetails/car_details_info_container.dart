@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:graduation_project/core/constant/app_text_styles.dart';
 import 'package:graduation_project/view/widget/shared/main_button.dart';
 
-import '../../../controller/carDetails/car_datails_controller.dart';
+import '../../../controller/car_datails_controller.dart';
 import '../../../core/constant/app_colors.dart';
 import 'carDetailsInfoContainer/name_and_price_rich_text.dart';
 
@@ -14,6 +14,8 @@ class CarDetailsInfoContainer extends GetView<CarDatailsControllerImp> {
 
   @override
   Widget build(BuildContext context) {
+    final rating = controller.carModel.rating ?? 0;
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 35),
       decoration: BoxDecoration(
@@ -32,11 +34,11 @@ class CarDetailsInfoContainer extends GetView<CarDatailsControllerImp> {
               const NameAndPriceRichText(),
               Row(children: [
                 Row(
-                  children: controller.ratingStars(controller.carModel.rating!),
+                  children: controller.ratingStars(rating),
                 ),
                 const SizedBox(width: 10),
                 Text(
-                  '${controller.carModel.rating}',
+                  '$rating',
                   style: AppTextStyles.carDetailsRating,
                 )
               ])

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:graduation_project/core/constant/app_text_styles.dart';
 
-import '../../../controller/carDetails/car_datails_controller.dart';
+import '../../../controller/car_datails_controller.dart';
 import '../../../core/constant/app_colors.dart';
 
 class CarDetailsListView extends GetView<CarDatailsControllerImp> {

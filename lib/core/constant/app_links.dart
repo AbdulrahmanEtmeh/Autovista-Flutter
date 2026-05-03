@@ -21,6 +21,7 @@ class AppLinks {
   // ======================= Home Links ===========================
   static const String home = '$server/home';
   static const String cars = '$server/cars';
+  static const String carDetails = '$server/cars';
   static const String styles = '$server/styles';
   // ======================= Categories Links ======================
   static const String categories = '$server/styles';

@@ -10,7 +10,7 @@ import 'package:graduation_project/view/screen/auth/register_check_email_screen.
 import 'package:graduation_project/view/screen/auth/register_screen.dart';
 import 'package:graduation_project/view/screen/auth/success_register_screen.dart';
 import 'package:graduation_project/view/screen/brands_screen.dart';
-import 'package:graduation_project/view/screen/carDetails/car_details_screen.dart';
+import 'package:graduation_project/view/screen/car_details_screen.dart';
 import 'package:graduation_project/view/screen/car_parts/car_parts_brands.dart';
 import 'package:graduation_project/view/screen/car_parts/car_parts_categories.dart';
 import 'package:graduation_project/view/screen/car_parts/car_parts_products.dart';

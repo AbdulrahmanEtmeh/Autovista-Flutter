@@ -15,6 +15,10 @@ class CarModel {
   String? style;
   List<String>? photos;
   int? isFavorite;
+  int? ownerId;
+  String? ownerName;
+  String? ownerEmail;
+  String? ownerPhone;
   String? createdAt;
   String? updatedAt;
 
@@ -33,6 +37,10 @@ class CarModel {
     this.style,
     this.photos,
     this.isFavorite,
+    this.ownerId,
+    this.ownerName,
+    this.ownerEmail,
+    this.ownerPhone,
     this.createdAt,
     this.updatedAt,
   });
@@ -141,6 +149,13 @@ class CarModel {
       style: parseNestedName(json['style']),
       photos: parsePhotos(json),
       isFavorite: parseFavorite(json),
+      ownerId: parseInt((json['owner'] as Map<String, dynamic>?)?['id']),
+      ownerName:
+          ((json['owner'] as Map<String, dynamic>?)?['name'])?.toString(),
+      ownerEmail:
+          ((json['owner'] as Map<String, dynamic>?)?['email'])?.toString(),
+      ownerPhone:
+          ((json['owner'] as Map<String, dynamic>?)?['phone'])?.toString(),
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
     );
@@ -162,6 +177,10 @@ class CarModel {
     data['style'] = style;
     data['photos'] = photos;
     data['is_favorite'] = isFavorite;
+    data['owner_id'] = ownerId;
+    data['owner_name'] = ownerName;
+    data['owner_email'] = ownerEmail;
+    data['owner_phone'] = ownerPhone;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
     return data;

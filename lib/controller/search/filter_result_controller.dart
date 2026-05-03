@@ -20,7 +20,7 @@ class FilterResultController extends GetxController {
   moveToCarDetails(CarModel carModel) {
     Future.microtask(() {
       Get.toNamed(AppRoutes.carDetails, arguments: {
-        'carModel': carModel,
+        'carId': carModel.id,
       });
     });
   }
