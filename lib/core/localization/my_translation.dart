@@ -49,6 +49,8 @@ class MyTranslation extends Translations {
           'password': 'كلمة المرور',
           'Forget password ?': 'هل نسيت كلمة المرور؟',
           'Sign in': 'تسجيل الدخول',
+          'or': 'أو',
+          'Sign in with Google': 'تسجيل الدخول باستخدام جوجل',
           'dont have an account ?': '  ليس لديك حساب؟',
           'sign up': 'إنشاء حساب',
 

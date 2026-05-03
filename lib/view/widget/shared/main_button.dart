@@ -9,6 +9,10 @@ class MainButton extends StatelessWidget {
   final double width;
   final Color buttonColor;
   final Color textColor;
+  final bool showArrowIcon;
+  final IconData? icon;
+  final double? iconSize;
+
   const MainButton({
     super.key,
     required this.buttonText,
@@ -17,6 +21,9 @@ class MainButton extends StatelessWidget {
     required this.width,
     this.buttonColor = AppColors.primaryRed,
     this.textColor = AppColors.primaryWhite,
+    this.showArrowIcon = false,
+    this.icon,
+    this.iconSize,
   });
 
   @override
@@ -28,13 +35,29 @@ class MainButton extends StatelessWidget {
       height: height,
       elevation: 10,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Get.width * 0.02),
+        borderRadius: BorderRadius.circular(Get.width * 0.075),
+        side: const BorderSide(color: Color(0xff263036), width: 2),
       ),
       textColor: textColor,
-      child: Text(
-        buttonText,
-        style: Theme.of(context).textTheme.titleMedium!.copyWith(
-            fontWeight: FontWeight.w700, color: AppColors.primaryWhite),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            buttonText,
+            style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: textColor,
+                ),
+          ),
+          if (showArrowIcon || icon != null) ...[
+            const SizedBox(width: 8),
+            Icon(
+              icon ?? Icons.arrow_forward,
+              size: iconSize ?? Get.width * 0.05,
+              color: textColor,
+            ),
+          ],
+        ],
       ),
     );
   }

@@ -6,7 +6,6 @@ import '../../../core/class/handling_data_view.dart';
 import '../../../core/function/app_exit_alert.dart';
 import '../../../core/function/input_validation.dart';
 import '../../widget/auth/component_container.dart';
-import '../../widget/auth/logo_container.dart';
 import '../../widget/auth/navigation_text.dart';
 import '../../widget/auth/auth_custom_field.dart';
 import '../../widget/auth/title_text.dart';
@@ -45,9 +44,9 @@ class LoginScreen extends StatelessWidget {
                             height: Get.height * 0.675,
                             child: Padding(
                               padding: EdgeInsets.only(
-                                top: Get.height * 0.075,
-                                left: Get.width * 0.075,
-                                right: Get.width * 0.075,
+                                top: Get.height * 0.1,
+                                left: Get.width * 0.1,
+                                right: Get.width * 0.1,
                               ),
                               child: Form(
                                 key: controller.formState,
@@ -87,29 +86,41 @@ class LoginScreen extends StatelessWidget {
                                       },
                                       buttonText: 'Sign in'.tr,
                                       height: Get.height * 0.065,
-                                      width: Get.width,
+                                      width: Get.width * 0.7,
+                                      showArrowIcon: true,
                                     ),
-                                    SizedBox(height: Get.height * 0.035),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: List.generate(
-                                        controller.logoContainer.length,
-                                        (index) => LogoContainer(
-                                          imageAsset:
-                                              controller.logoContainer[index],
-                                          onTap: () {
-                                            if (index == 0) {
-                                              controller.googleSignIn();
-                                            } else if (index == 1) {
-                                              // Facebook Sign-In logic here
-                                            } else if (index == 2) {
-                                              // Twitter Sign-In logic here
-                                            }
-                                          },
-                                        ),
-                                      ),
+                                    SizedBox(height: Get.height * 0.015),
+                                    Text('or'.tr),
+                                    SizedBox(height: Get.height * 0.015),
+                                    MainButton(
+                                      buttonText: 'Sign in with Google'.tr,
+                                      buttonColor: const Color(0xff86898C),
+                                      icon: Icons.g_mobiledata,
+                                      iconSize: Get.width * 0.08,
+                                      onPressed: () {},
+                                      height: Get.height * 0.065,
+                                      width: Get.width * 0.7,
                                     ),
+                                    // Row(
+                                    //   mainAxisAlignment:
+                                    //       MainAxisAlignment.spaceAround,
+                                    //   children: List.generate(
+                                    //     controller.logoContainer.length,
+                                    //     (index) => LogoContainer(
+                                    //       imageAsset:
+                                    //           controller.logoContainer[index],
+                                    //       onTap: () {
+                                    //         if (index == 0) {
+                                    //           controller.googleSignIn();
+                                    //         } else if (index == 1) {
+                                    //           // Facebook Sign-In logic here
+                                    //         } else if (index == 2) {
+                                    //           // Twitter Sign-In logic here
+                                    //         }
+                                    //       },
+                                    //     ),
+                                    //   ),
+                                    // ),
                                     SizedBox(height: Get.height * 0.03),
                                     NavigationText(
                                       firstText: 'dont have an account ?'.tr,

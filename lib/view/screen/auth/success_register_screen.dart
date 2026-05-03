@@ -35,12 +35,13 @@ class SuccessRegisterScreen extends StatelessWidget {
                         child: Padding(
                           padding: EdgeInsets.only(
                             top: Get.height * 0.075,
-                            left: Get.width * 0.075,
-                            right: Get.width * 0.075,
+                            left: Get.width * 0.1,
+                            right: Get.width * 0.1,
                           ),
                           child: Column(
                             children: [
                               const SuccessIcon(),
+                              SizedBox(height: Get.height * 0.075),
                               SubTitle(text: 'Congratulations'.tr),
                               DescriptionText(
                                 text: 'Successfully registered'.tr,
@@ -48,14 +49,14 @@ class SuccessRegisterScreen extends StatelessWidget {
                               const Spacer(),
                               Padding(
                                 padding:
-                                    EdgeInsets.only(bottom: Get.height * 0.025),
+                                    EdgeInsets.only(bottom: Get.height * 0.15),
                                 child: MainButton(
                                   buttonText: 'Go back to sing in'.tr,
                                   onPressed: () {
                                     Get.offAllNamed(AppRoutes.login);
                                   },
                                   height: Get.height * 0.065,
-                                  width: Get.width,
+                                  width: Get.width * 0.7,
                                 ),
                               ),
                             ],

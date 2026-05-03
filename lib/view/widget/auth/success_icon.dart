@@ -12,7 +12,7 @@ class SuccessIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Icon(
       Icons.check_circle_outline_outlined,
-      size: Get.height * 0.25,
+      size: Get.height * 0.15,
       color: AppColors.primaryRed,
     );
   }

@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+
 class CarModel {
   int? id;
   String? name;
@@ -42,9 +44,49 @@ class CarModel {
           double.tryParse(value.toString())?.toInt();
     }
 
+    String? parseLocalizedText(dynamic value) {
+      String? clean(dynamic raw) {
+        final text = raw?.toString();
+        if (text == null ||
+            text.trim().isEmpty ||
+            text.toLowerCase() == 'null') {
+          return null;
+        }
+        return text;
+      }
+
+      final languageCode =
+          (Get.locale?.languageCode ?? Get.deviceLocale?.languageCode ?? 'en')
+              .toLowerCase();
+      final preferArabic = languageCode.startsWith('ar');
+
+      if (value is Map<String, dynamic>) {
+        final en = clean(value['en']);
+        final ar = clean(value['ar']);
+
+        if (preferArabic) {
+          if (ar != null) return ar;
+          if (en != null) return en;
+        } else {
+          if (en != null) return en;
+          if (ar != null) return ar;
+        }
+
+        for (final entry in value.values) {
+          final text = clean(entry);
+          if (text != null) {
+            return text;
+          }
+        }
+        return null;
+      }
+
+      return clean(value);
+    }
+
     String? parseNestedName(dynamic value) {
       if (value is Map<String, dynamic>) {
-        return value['name']?.toString();
+        return parseLocalizedText(value['name']);
       }
       return value?.toString();
     }
@@ -82,7 +124,7 @@ class CarModel {
 
     return CarModel(
       id: parseInt(json['id']),
-      name: json['name'],
+      name: parseLocalizedText(json['name']) ?? 'Unknown Car',
       price: parseInt(json['price']),
       rating: json['rating'] != null
           ? double.tryParse(json['rating'].toString())
@@ -93,7 +135,7 @@ class CarModel {
       consumption: parseInt(
         json['consumption'] ?? json['city_mpg'] ?? json['highway_mpg'],
       ),
-      color: json['color'],
+      color: parseLocalizedText(json['color']),
       date: json['date']?.toString() ?? json['year']?.toString(),
       brand: parseNestedName(json['brand']),
       style: parseNestedName(json['style']),

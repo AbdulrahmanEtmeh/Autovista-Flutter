@@ -36,7 +36,7 @@ import '../../view/screen/settings/account_settings_screen.dart';
 List<GetPage> routes = [
   // GetPage(
   //   name: '/',
-  //   page: () => const RegisterCheckEmailScreen(),
+  //   page: () => const LoginScreen(),
   // ),
   // Language
   GetPage(

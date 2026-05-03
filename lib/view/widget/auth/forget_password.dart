@@ -17,7 +17,7 @@ class ForgetPassword extends StatelessWidget {
           style: Theme.of(context)
               .textTheme
               .titleMedium!
-              .copyWith(fontSize: Get.height * 0.02),
+              .copyWith(fontSize: Get.height * 0.015),
         ),
       ),
     );

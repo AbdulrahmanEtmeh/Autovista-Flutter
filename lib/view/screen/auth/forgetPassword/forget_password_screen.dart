@@ -55,9 +55,9 @@ class ForgetPasswordScreen extends StatelessWidget {
                                   height: Get.height * 0.6,
                                   child: Padding(
                                     padding: EdgeInsets.only(
-                                      top: Get.height * 0.075,
-                                      left: Get.width * 0.075,
-                                      right: Get.width * 0.075,
+                                      top: Get.height * 0.1,
+                                      left: Get.width * 0.1,
+                                      right: Get.width * 0.1,
                                     ),
                                     child: Form(
                                       key: controller.formState,
@@ -81,6 +81,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                                             labelText: 'email'.tr,
                                             icon: Icons.email_outlined,
                                           ),
+                                          SizedBox(height: Get.height * 0.04),
                                           MainButton(
                                             buttonText:
                                                 'Send Verfication Code'.tr,
@@ -88,7 +89,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                                               controller.checkEmail();
                                             },
                                             height: Get.height * 0.065,
-                                            width: Get.width,
+                                            width: Get.width * 0.7,
                                           ),
                                         ],
                                       ),

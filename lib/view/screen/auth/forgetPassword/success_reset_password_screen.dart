@@ -44,6 +44,7 @@ class SuccessResetPasswordScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               const SuccessIcon(),
+                              SizedBox(height: Get.height * 0.075),
                               SubTitle(
                                 text: 'Done !'.tr,
                               ),
@@ -53,14 +54,15 @@ class SuccessResetPasswordScreen extends StatelessWidget {
                               const Spacer(),
                               Padding(
                                 padding:
-                                    EdgeInsets.only(bottom: Get.height * 0.05),
+                                    EdgeInsets.only(bottom: Get.height * 0.15),
                                 child: MainButton(
-                                    buttonText: 'Go back to sing in'.tr,
-                                    onPressed: () {
-                                      controller.moveToLogin();
-                                    },
-                                    height: Get.height * 0.065,
-                                    width: Get.width),
+                                  buttonText: 'Go back to sing in'.tr,
+                                  onPressed: () {
+                                    controller.moveToLogin();
+                                  },
+                                  height: Get.height * 0.065,
+                                  width: Get.width * 0.7,
+                                ),
                               )
                             ],
                           ),

@@ -34,14 +34,9 @@ class AuthCustomField extends StatelessWidget {
           enabledBorder: const UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.grey),
           ),
-
-          // contentPadding: EdgeInsets.symmetric(
-          //     horizontal: Get.width * 0.075, vertical: Get.height * 0.015),
           labelText: labelText,
-          labelStyle: Theme.of(context)
-              .textTheme
-              .bodyLarge
-              ?.copyWith(color: AppColors.authText),
+          labelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              color: AppColors.authText, fontSize: Get.height * 0.015),
           suffixIcon: Padding(
             padding: EdgeInsetsDirectional.only(end: Get.width * 0.04),
             child: InkWell(

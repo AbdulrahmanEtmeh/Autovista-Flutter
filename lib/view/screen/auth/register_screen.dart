@@ -42,9 +42,9 @@ class RegisterScreen extends StatelessWidget {
                         height: Get.height * 0.8235,
                         child: Padding(
                           padding: EdgeInsets.only(
-                            top: Get.height * 0.075,
-                            left: Get.width * 0.075,
-                            right: Get.width * 0.075,
+                            top: Get.height * 0.1,
+                            left: Get.width * 0.1,
+                            right: Get.width * 0.1,
                           ),
                           child: Form(
                             key: controller.formState,
@@ -92,7 +92,7 @@ class RegisterScreen extends StatelessWidget {
                                     icon: Icons.remove_red_eye,
                                   ),
                                 ),
-                                SizedBox(height: Get.height * 0.015),
+                                SizedBox(height: Get.height * 0.05),
                                 MainButton(
                                   buttonText: 'Register'.tr,
                                   onPressed: () {
@@ -100,26 +100,6 @@ class RegisterScreen extends StatelessWidget {
                                   },
                                   height: Get.height * 0.065,
                                   width: Get.width,
-                                ),
-                                SizedBox(height: Get.height * 0.035),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    LogoContainer(
-                                      imageAsset: AppImageAsset.googleLogoImage,
-                                      onTap: () {},
-                                    ),
-                                    LogoContainer(
-                                        onTap: () {},
-                                        imageAsset:
-                                            AppImageAsset.facebookLogoImage),
-                                    LogoContainer(
-                                      imageAsset:
-                                          AppImageAsset.twitterLogoImage,
-                                      onTap: () {},
-                                    )
-                                  ],
                                 ),
                                 SizedBox(height: Get.height * 0.03),
                                 NavigationText(
