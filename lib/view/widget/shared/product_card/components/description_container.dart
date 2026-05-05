@@ -41,7 +41,7 @@ class DescriptionContainer extends StatelessWidget {
                 Row(
                   children: [
                     const DetailsIcon(icon: Icons.oil_barrel_outlined),
-                    DetailsText(text: '${carModel.consumption}')
+                    DetailsText(text: '${carModel.cityMpg} MPG')
                   ],
                 ),
               ],

@@ -3,15 +3,24 @@ import 'package:get/get.dart';
 class CarModel {
   int? id;
   String? name;
-  int? price;
+  String? slug;
+  double? price;
   double? rating;
-  int? space;
+  int? cylinders;
   int? capacity;
   String? gearType;
-  int? consumption;
+  int? topSpeed;
+  String? fuelType;
+  int? engineHp;
+  int? highwayMpg;
+  int? cityMpg;
   String? color;
-  String? date;
+  String? marketCategory;
+  String? year;
+  bool? isRent;
+  int? brandId;
   String? brand;
+  int? styleId;
   String? style;
   List<String>? photos;
   int? isFavorite;
@@ -19,21 +28,33 @@ class CarModel {
   String? ownerName;
   String? ownerEmail;
   String? ownerPhone;
+  int? offerId;
+  double? offerOldPrice;
+  double? offerNewPrice;
+  String? offerPercentage;
   String? createdAt;
-  String? updatedAt;
 
   CarModel({
     this.id,
     this.name,
+    this.slug,
     this.price,
     this.rating,
-    this.space,
+    this.cylinders,
     this.capacity,
     this.gearType,
-    this.consumption,
+    this.topSpeed,
+    this.fuelType,
+    this.engineHp,
+    this.highwayMpg,
+    this.cityMpg,
     this.color,
-    this.date,
+    this.marketCategory,
+    this.year,
+    this.isRent,
+    this.brandId,
     this.brand,
+    this.styleId,
     this.style,
     this.photos,
     this.isFavorite,
@@ -41,8 +62,11 @@ class CarModel {
     this.ownerName,
     this.ownerEmail,
     this.ownerPhone,
+    this.offerId,
+    this.offerOldPrice,
+    this.offerNewPrice,
+    this.offerPercentage,
     this.createdAt,
-    this.updatedAt,
   });
 
   factory CarModel.fromJson(Map<String, dynamic> json) {
@@ -130,59 +154,93 @@ class CarModel {
       return null;
     }
 
+    final owner = json['owner'] as Map<String, dynamic>?;
+    final offer = json['offer'] as Map<String, dynamic>?;
+    final brandRaw = json['brand'] as Map<String, dynamic>?;
+    final styleRaw = json['style'] as Map<String, dynamic>?;
+
     return CarModel(
       id: parseInt(json['id']),
       name: parseLocalizedText(json['name']) ?? 'Unknown Car',
-      price: parseInt(json['price']),
+      slug: json['slug']?.toString(),
+      price: json['price'] != null
+          ? double.tryParse(json['price'].toString())
+          : null,
       rating: json['rating'] != null
           ? double.tryParse(json['rating'].toString())
           : null,
-      space: parseInt(json['space'] ?? json['cylinders']),
+      cylinders: parseInt(json['cylinders']),
       capacity: parseInt(json['capacity']),
-      gearType: json['gear_type'],
-      consumption: parseInt(
-        json['consumption'] ?? json['city_mpg'] ?? json['highway_mpg'],
-      ),
+      gearType: json['gear_type']?.toString(),
+      topSpeed: parseInt(json['top_speed']),
+      fuelType: json['fuel_type']?.toString(),
+      engineHp: parseInt(json['engine_hp']),
+      highwayMpg: parseInt(json['highway_mpg']),
+      cityMpg: parseInt(json['city_mpg']),
       color: parseLocalizedText(json['color']),
-      date: json['date']?.toString() ?? json['year']?.toString(),
+      marketCategory: parseLocalizedText(json['market_category']),
+      year: json['year']?.toString(),
+      isRent: json['is_rent'] is bool
+          ? json['is_rent'] as bool
+          : json['is_rent'] != null
+              ? json['is_rent'].toString() == 'true'
+              : null,
+      brandId: parseInt(brandRaw?['id']),
       brand: parseNestedName(json['brand']),
+      styleId: parseInt(styleRaw?['id']),
       style: parseNestedName(json['style']),
       photos: parsePhotos(json),
       isFavorite: parseFavorite(json),
-      ownerId: parseInt((json['owner'] as Map<String, dynamic>?)?['id']),
-      ownerName:
-          ((json['owner'] as Map<String, dynamic>?)?['name'])?.toString(),
-      ownerEmail:
-          ((json['owner'] as Map<String, dynamic>?)?['email'])?.toString(),
-      ownerPhone:
-          ((json['owner'] as Map<String, dynamic>?)?['phone'])?.toString(),
+      ownerId: parseInt(owner?['id']),
+      ownerName: owner?['name']?.toString(),
+      ownerEmail: owner?['email']?.toString(),
+      ownerPhone: owner?['phone']?.toString(),
+      offerId: parseInt(offer?['id']),
+      offerOldPrice: offer?['old_price'] != null
+          ? double.tryParse(offer!['old_price'].toString())
+          : null,
+      offerNewPrice: offer?['new_price'] != null
+          ? double.tryParse(offer!['new_price'].toString())
+          : null,
+      offerPercentage: offer?['percentage']?.toString(),
       createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
     );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['price'] = price;
-    data['rating'] = rating;
-    data['space'] = space;
-    data['capacity'] = capacity;
-    data['gear_type'] = gearType;
-    data['consumption'] = consumption;
-    data['color'] = color;
-    data['date'] = date;
-    data['brand'] = brand;
-    data['style'] = style;
-    data['photos'] = photos;
-    data['is_favorite'] = isFavorite;
-    data['owner_id'] = ownerId;
-    data['owner_name'] = ownerName;
-    data['owner_email'] = ownerEmail;
-    data['owner_phone'] = ownerPhone;
-    data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
-    return data;
+    return {
+      'id': id,
+      'name': name,
+      'slug': slug,
+      'price': price,
+      'rating': rating,
+      'cylinders': cylinders,
+      'capacity': capacity,
+      'gear_type': gearType,
+      'top_speed': topSpeed,
+      'fuel_type': fuelType,
+      'engine_hp': engineHp,
+      'highway_mpg': highwayMpg,
+      'city_mpg': cityMpg,
+      'color': color,
+      'market_category': marketCategory,
+      'year': year,
+      'is_rent': isRent,
+      'brand_id': brandId,
+      'brand': brand,
+      'style_id': styleId,
+      'style': style,
+      'images': photos,
+      'is_fav': isFavorite,
+      'owner_id': ownerId,
+      'owner_name': ownerName,
+      'owner_email': ownerEmail,
+      'owner_phone': ownerPhone,
+      'offer_id': offerId,
+      'offer_old_price': offerOldPrice,
+      'offer_new_price': offerNewPrice,
+      'offer_percentage': offerPercentage,
+      'created_at': createdAt,
+    };
   }
 }

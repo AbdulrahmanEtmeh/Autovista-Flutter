@@ -93,10 +93,10 @@ class SearchList extends GetView<HomePageControllerImp> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 HomeSearchRedContainer(
-                                    text: '${listCarsModel[index].date}',
+                                    text: '${listCarsModel[index].year}',
                                     boxConstraints: constraints),
                                 HomeSearchRedContainer(
-                                    text: '${listCarsModel[index].date}',
+                                    text: '${listCarsModel[index].year}',
                                     boxConstraints: constraints),
                                 HomeSearchRedContainer(
                                     text: '${listCarsModel[index].brand}',

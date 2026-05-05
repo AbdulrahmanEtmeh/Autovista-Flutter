@@ -4,7 +4,7 @@ import '../../../../../core/constant/app_colors.dart';
 
 class PriceAndYear extends StatelessWidget {
   final BoxConstraints constraints;
-  final int price;
+  final double price;
   const PriceAndYear(
       {super.key, required this.constraints, required this.price});
 
