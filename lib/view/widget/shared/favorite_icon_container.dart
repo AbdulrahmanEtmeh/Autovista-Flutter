@@ -21,7 +21,7 @@ class FavoriteIconContainer extends StatelessWidget {
     return Container(
         // margin: const EdgeInsets.only(left: 10),
         decoration: BoxDecoration(
-            color: AppColors.pureBlack.withOpacity(0.8),
+            color: AppColors.primaryWhite,
             borderRadius: BorderRadius.circular(containerSize)),
         height: containerSize,
         width: containerSize,

@@ -8,6 +8,7 @@ class CarDetailsIconContainer extends StatelessWidget {
   final Color iconColor;
   final double iconSize;
   final double containerOpacity;
+
   const CarDetailsIconContainer({
     super.key,
     required this.onPressedIcons,
@@ -19,20 +20,23 @@ class CarDetailsIconContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.pureBlack.withOpacity(containerOpacity),
-        borderRadius: BorderRadius.circular(50),
+    return GestureDetector(
+      onTap: onPressedIcons,
+      child: Container(
+        height: 45,
+        width: 45,
+        decoration: BoxDecoration(
+          color: AppColors.primaryWhite, 
+          shape: BoxShape.circle,
+         
+        ),
+        child: Icon(
+          icon,
+          color: AppColors.primaryRed, 
+          size: iconSize,
+         
+        ),
       ),
-      height: 50,
-      width: 50,
-      child: IconButton(
-          onPressed: onPressedIcons,
-          icon: Icon(
-            icon,
-            color: iconColor,
-            size: iconSize,
-          )),
     );
   }
 }
