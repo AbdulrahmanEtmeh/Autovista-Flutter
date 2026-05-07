@@ -1,16 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:graduation_project/core/class/handling_data_view.dart';
-import 'package:graduation_project/core/constant/app_colors.dart';
-import 'package:graduation_project/core/constant/app_text_styles.dart';
 import 'package:graduation_project/view/widget/carDetails/carDetailsInfoContainer/car_details_info_card.dart';
-import 'package:graduation_project/view/widget/shared/section_name.dart';
 
 import '../../controller/car_datails_controller.dart';
 import '../../controller/favorite/favorite_controller.dart';
 import '../widget/carDetails/carDetailsPageView/car_datails_page_view.dart';
-
 import '../widget/carDetails/carDetailsPageView/car_details_page_indicator.dart';
 
 class CarDetailsScreen extends StatelessWidget {
@@ -23,24 +18,20 @@ class CarDetailsScreen extends StatelessWidget {
     return GetBuilder<CarDatailsControllerImp>(
       builder: (controller) => SafeArea(
         child: Scaffold(
-          
-          backgroundColor: AppColors.backGround,
           body: HandlingDataView(
             statusRequest: controller.statusRequest,
             widget: const SingleChildScrollView(
-                  child: Stack(
+              child: Stack(
                 children: [
                   CarDetailsPageView(),
                   Align(
-                     alignment: Alignment.bottomCenter,
-                     
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 375),
-                      child: CarDetailsPageIndicator(),
-                    )),
-                  
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 375),
+                        child: CarDetailsPageIndicator(),
+                      )),
                   Padding(
-                    padding: EdgeInsets.only(top: 390),//
+                    padding: EdgeInsets.only(top: 390), //
                     child: CarDetailsInfoCard(),
                   ),
                 ],

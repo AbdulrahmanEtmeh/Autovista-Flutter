@@ -1,15 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:graduation_project/view/widget/carDetails/carDetailsPageView/car_details_page_indicator.dart';
 import '../../../../core/constant/app_links.dart';
 import '../../../../controller/car_datails_controller.dart';
 import '../../../../core/constant/app_colors.dart';
 import '../../shared/favorite_icon_container.dart';
 import 'car_datails_icon_container.dart';
+
 class CarDetailsPageView extends GetView<CarDatailsControllerImp> {
   const CarDetailsPageView({super.key});
-
   @override
   Widget build(BuildContext context) {
     final photos = controller.carModel.photos ?? <String>[];
@@ -28,21 +27,21 @@ class CarDetailsPageView extends GetView<CarDatailsControllerImp> {
                       width: Get.width,
                       fit: BoxFit.fill,
                       alignment: Alignment.center,
-                        errorWidget: (context, url, error) => Container(
+                      errorWidget: (context, url, error) => Container(
                         color: AppColors.homeContainers,
-                        child: const Icon(
+                        child: Icon(
                           Icons.directions_car,
                           color: AppColors.primaryWhite,
-                          size: 50,
+                          size: Get.width * 0.1,
                         ),
                       ),
                     )
                   : Container(
                       color: AppColors.homeContainers,
-                      child: const Icon(
+                      child: Icon(
                         Icons.directions_car,
                         color: AppColors.primaryWhite,
-                        size: 50,
+                        size: Get.width * 0.1,
                       ),
                     );
             },
@@ -54,7 +53,7 @@ class CarDetailsPageView extends GetView<CarDatailsControllerImp> {
               onPressedIcons: controller.moveToPrevScreen,
               icon: Icons.arrow_back,
               iconColor: AppColors.primaryRed,
-              iconSize: 30,
+              iconSize: Get.width * 0.065,
               containerOpacity: 0.6,
             ),
           ),
@@ -63,16 +62,10 @@ class CarDetailsPageView extends GetView<CarDatailsControllerImp> {
             right: 15,
             child: FavoriteIconContainer(
               carModel: controller.carModel,
-              iconSize: 28,
-              containerSize: 45,
+              iconSize: Get.width * 0.065,
+              containerSize: Get.width * 0.1,
             ),
           ),
-          // Positioned(
-          //   bottom: 12,
-          //   left: 0,
-          //   right: 0,
-          //   child: CarDetailsPageIndicator(),
-          // ),
         ],
       ),
     );

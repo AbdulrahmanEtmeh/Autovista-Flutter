@@ -1,5 +1,4 @@
 // Info Row Widget
-import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class InfoRow extends StatelessWidget {

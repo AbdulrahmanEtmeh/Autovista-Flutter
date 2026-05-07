@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
-import 'package:get/instance_manager.dart';
 import 'package:graduation_project/controller/car_datails_controller.dart';
 import 'package:graduation_project/core/constant/app_colors.dart';
 import 'package:graduation_project/core/constant/app_text_styles.dart';
 import 'package:graduation_project/view/widget/carDetails/car_buy_button.dart';
-import 'package:graduation_project/view/widget/carDetails/Rectangle.dart';
+import 'package:graduation_project/view/widget/carDetails/rectangle.dart';
 import 'package:graduation_project/view/widget/carDetails/seller_info_row.dart';
 
 class CarDetailsInfoCard extends GetView<CarDatailsControllerImp> {
@@ -46,24 +44,22 @@ class CarDetailsInfoCard extends GetView<CarDatailsControllerImp> {
                     style: const TextStyle(
                       color: AppColors.primaryWhite,
                       fontSize: 14,
-                      fontWeight: FontWeight(500),
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                 Text(
-  "${controller.carModel.year?.toString().split('-').first??""}",
-  style: const TextStyle(
-    color: AppColors.primaryWhite,
-    fontSize: 14,
-    fontWeight: FontWeight.w500,
-  ),
-)
+                  Text(
+                    controller.carModel.year?.toString().split('-').first ?? "",
+                    style: const TextStyle(
+                      color: AppColors.primaryWhite,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  )
                 ],
               ),
             ],
           ),
-
-          const SizedBox(height: 10),
-
+          SizedBox(height: Get.width * 0.025),
           // Gear Type & Cylinders
           Row(
             children: [
@@ -72,7 +68,7 @@ class CarDetailsInfoCard extends GetView<CarDatailsControllerImp> {
                     label: 'Gear type',
                     value: '${controller.carModel.gearType}'),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: Get.width * 0.0375),
               Expanded(
                 child: Rectangle(
                     label: 'Cylinders',
@@ -80,27 +76,22 @@ class CarDetailsInfoCard extends GetView<CarDatailsControllerImp> {
               ),
             ],
           ),
-
-          const SizedBox(height: 15),
-
+          SizedBox(height: Get.width * 0.0375),
           // Seller Information
           const Text(
             'Seller Information',
             style: TextStyle(
               color: Colors.white,
               fontSize: 16,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w500,
             ),
           ),
-
           const Divider(color: AppColors.primaryRed, thickness: 1, height: 16),
-
           InfoRow(label: 'Name', value: '${controller.carModel.ownerName}'),
           InfoRow(label: 'Email', value: '${controller.carModel.ownerEmail}'),
           InfoRow(label: 'Phone', value: '${controller.carModel.ownerPhone}'),
           const Divider(color: AppColors.primaryRed, thickness: 1, height: 16),
-          const SizedBox(height: 15),
-
+          SizedBox(height: Get.width * 0.0375),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -119,7 +110,7 @@ class CarDetailsInfoCard extends GetView<CarDatailsControllerImp> {
               ),
               SizedBox(
                 width: Get.width * 0.6,
-                height: 59,
+                height: Get.width * 0.14,
                 child: const BuyButton(),
               ),
             ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../../core/constant/app_colors.dart';
 
@@ -23,18 +24,16 @@ class CarDetailsIconContainer extends StatelessWidget {
     return GestureDetector(
       onTap: onPressedIcons,
       child: Container(
-        height: 45,
-        width: 45,
-        decoration: BoxDecoration(
-          color: AppColors.primaryWhite, 
+        height: Get.width * 0.1,
+        width: Get.width * 0.1,
+        decoration: const BoxDecoration(
+          color: AppColors.primaryWhite,
           shape: BoxShape.circle,
-         
         ),
         child: Icon(
           icon,
-          color: AppColors.primaryRed, 
+          color: iconColor,
           size: iconSize,
-         
         ),
       ),
     );
