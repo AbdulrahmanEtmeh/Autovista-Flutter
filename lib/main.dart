@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
 
@@ -14,6 +15,8 @@ import 'core/constant/app_strings.dart';
 import 'core/function/show_local_notifications.dart';
 import 'core/localization/locale_controller.dart';
 import 'core/themes/app_dark_theme.dart';
+import 'controller/theme_controller.dart';
+import 'core/design/theme/app_theme.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -51,15 +54,26 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LocaleController controller = Get.put(LocaleController());
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: AppStrings.appName,
-      translations: MyTranslation(),
-      initialBinding: AppBindings(),
-      locale: controller.initialLanguage,
-      theme: AppDarkTheme.darkTheme,
-      getPages: routes,
-    );
+    LocaleController localeController = Get.put(LocaleController());
+    ThemeController themeController = Get.put(ThemeController());
+    return ScreenUtilInit(
+        designSize: const Size(402, 874),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (context, child) {
+          return Obx(() => GetMaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: AppStrings.appName,
+                translations: MyTranslation(),
+                initialBinding: AppBindings(),
+                locale: localeController.initialLanguage,
+                theme: AppTheme.lightTheme,
+                darkTheme: AppTheme.darkTheme,
+                themeMode: themeController.isDarkMode.value
+                    ? ThemeMode.dark
+                    : ThemeMode.light,
+                getPages: routes,
+              ));
+        });
   }
 }

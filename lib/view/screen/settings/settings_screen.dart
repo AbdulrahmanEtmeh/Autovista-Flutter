@@ -5,6 +5,7 @@ import 'package:graduation_project/view/widget/settings/upper_profile_section.da
 import '../../../controller/settings/settings_screen_controller.dart';
 import '../../../core/constant/app_colors.dart';
 import '../../../core/constant/app_routes.dart';
+import '../../../core/function/show_theme_dialog.dart';
 import '../../widget/settings/custom_list_tile.dart';
 import '../../widget/shared/dialogs/delete_account_dialog.dart';
 import '../../widget/shared/dialogs/rate_app_dialog.dart';
@@ -57,6 +58,13 @@ class SettingsScreen extends StatelessWidget {
               subtitle: 'Change app language',
               onTap: () {},
             ),
+            Obx(() => CustomListTile(
+                  title: 'Theme',
+                  subtitle: controller.getCurrentThemeName(),
+                  onTap: () {
+                    showThemeDialog(context, controller);
+                  },
+                )),
             CustomListTile(
               title: 'Terms & Conditions',
               subtitle: 'View terms & conditions',

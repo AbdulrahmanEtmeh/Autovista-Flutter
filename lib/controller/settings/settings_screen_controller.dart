@@ -2,15 +2,19 @@ import 'package:get/get.dart';
 import 'package:graduation_project/core/constant/app_routes.dart';
 import 'package:graduation_project/core/services/my_services.dart';
 import 'package:graduation_project/data/source/remote/auth/log_out_data.dart';
+import 'package:graduation_project/controller/theme_controller.dart';
 
 abstract class SettingsScreenController extends GetxController {
   logOut();
   moveTo(String route);
+  changeTheme(bool isDarkMode);
+  String getCurrentThemeName();
 }
 
 class SettingsScreenControllerImp extends SettingsScreenController {
   LogOutData logOutData = LogOutData(Get.find());
   MyServices myServices = Get.find();
+  ThemeController themeController = Get.find();
   String? userName;
   String? email;
 
@@ -24,6 +28,16 @@ class SettingsScreenControllerImp extends SettingsScreenController {
   @override
   moveTo(String route) {
     Get.toNamed(route);
+  }
+
+  @override
+  changeTheme(bool isDarkMode) {
+    themeController.changeTheme(isDarkMode);
+  }
+
+  @override
+  String getCurrentThemeName() {
+    return themeController.currentThemeName;
   }
 
   logoutFunction() {
