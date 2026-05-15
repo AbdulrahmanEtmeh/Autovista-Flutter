@@ -7,11 +7,11 @@ class CategoriesData {
 
   CategoriesData(this.apiClient);
 
-  Future<ApiResponse<Map<String, dynamic>>> getCarsCategories(
-    int styleId,
+  Future<ApiResponse<Map<String, dynamic>>> getCategory(
+    int categoryId,
   ) async {
     return apiClient.get(
-      "${AppLinks.categories}/${styleId.toString()}/cars",
+      "${AppLinks.categories}/${categoryId.toString()}",
       authenticated: true,
     );
   }

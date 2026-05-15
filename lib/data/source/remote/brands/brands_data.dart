@@ -7,9 +7,9 @@ class BrandsData {
 
   BrandsData(this.apiClient);
 
-  Future<ApiResponse<Map<String, dynamic>>> getCarsBrands(int brandId) async {
+  Future<ApiResponse<Map<String, dynamic>>> getBrandDetails(int brandId) async {
     return apiClient.get(
-      "${AppLinks.brands}/${brandId.toString()}/cars",
+      "${AppLinks.brandDetails}/${brandId.toString()}",
       authenticated: true,
     );
   }

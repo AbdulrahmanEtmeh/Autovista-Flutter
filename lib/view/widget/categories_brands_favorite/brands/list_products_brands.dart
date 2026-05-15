@@ -7,13 +7,19 @@ import '../../../../controller/brands_screen_controller.dart';
 import '../../../../controller/favorite/favorite_controller.dart';
 
 class ListProductsBrands extends GetView<BrandsScreenControllerImp> {
-  const ListProductsBrands({
+  ListProductsBrands({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     FavoriteController controllerFav = Get.find();
+    print(
+        'DEBUG: ListProductsBrands.build called, cars.length=${controller.cars.length}');
+    if (controller.cars.isNotEmpty) {
+      print(
+          'DEBUG: First car id=${controller.cars[0]['id']}, brand=${controller.cars[0]['brand']}');
+    }
     return SizedBox(
       height: Get.height,
       width: Get.width,

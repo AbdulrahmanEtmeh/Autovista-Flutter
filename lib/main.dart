@@ -14,7 +14,6 @@ import 'package:graduation_project/core/constant/routes.dart';
 import 'core/constant/app_strings.dart';
 import 'core/function/show_local_notifications.dart';
 import 'core/localization/locale_controller.dart';
-import 'core/themes/app_dark_theme.dart';
 import 'controller/theme_controller.dart';
 import 'core/design/theme/app_theme.dart';
 

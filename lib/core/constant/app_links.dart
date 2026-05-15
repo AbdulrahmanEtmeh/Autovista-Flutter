@@ -27,6 +27,7 @@ class AppLinks {
   static const String categories = '$server/styles';
   // ======================= Brands =============================
   static const String brands = '$server/brands';
+  static const String brandDetails = '$server/brands';
   // ======================= Favorite ============================
   static const String favoriteAdd = '$server/favorites';
   static const String favoriteView = '$server/favorites';

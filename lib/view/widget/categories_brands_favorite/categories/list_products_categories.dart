@@ -7,7 +7,7 @@ import '../../../../controller/favorite/favorite_controller.dart';
 import 'category_product_interface.dart';
 
 class ListProductsCategories extends GetView<CategoriesScreenControllerImp> {
-  const ListProductsCategories({
+  ListProductsCategories({
     super.key,
   });
 

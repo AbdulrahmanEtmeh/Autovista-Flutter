@@ -14,24 +14,26 @@ class CategoriesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(CategoriesScreenControllerImp());
-    Get.put(FavoriteController());
+    if (!Get.isRegistered<FavoriteController>()) {
+      Get.put(FavoriteController());
+    }
     return Scaffold(
       appBar: customAppBar(context, title: 'Categories'.tr),
       body: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: Get.width * 0.03, vertical: Get.height * 0.01),
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const ListCategories(),
-              SizedBox(height: Get.height * 0.03),
-              GetBuilder<CategoriesScreenControllerImp>(
-                builder: (controller) => HandlingDataView(
+          child: GetBuilder<CategoriesScreenControllerImp>(
+            builder: (controller) => Column(
+              children: [
+                ListCategories(),
+                SizedBox(height: Get.height * 0.03),
+                HandlingDataView(
                   statusRequest: controller.statusRequest,
-                  widget: const ListProductsCategories(),
-                ),
-              )
-            ],
+                  widget: ListProductsCategories(),
+                )
+              ],
+            ),
           ),
         ),
       ),

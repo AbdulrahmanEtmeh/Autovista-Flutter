@@ -1,36 +1,35 @@
 import 'package:get/get.dart';
 import 'package:graduation_project/core/class/status_request.dart';
-import 'package:graduation_project/core/network/api_response.dart';
-import 'package:graduation_project/core/services/my_services.dart';
-import 'package:graduation_project/data/source/remote/categories/categories_data.dart';
 
 import '../core/constant/app_routes.dart';
-import '../core/function/handling_data.dart';
 import '../data/model/car_model.dart';
 
 abstract class CategoriesScreenController extends GetxController {
   initialData();
   changeCategory(int value, int catVal);
-  getItems(int catId);
+  filterCarsByCategory(int categoryId);
   moveToCarDetails(CarModel carModel);
 }
 
 class CategoriesScreenControllerImp extends CategoriesScreenController {
   List carCategories = [];
+  List allCars = [];
   List cars = [];
   int? selectedCategory;
   int? catId;
 
-  MyServices myServices = Get.find();
-  CategoriesData categoriesData = CategoriesData(Get.find());
   StatusRequest statusRequest = StatusRequest.none;
 
   @override
   initialData() {
-    carCategories = Get.arguments['categories'];
-    selectedCategory = Get.arguments['selectedCategory'];
+    carCategories = Get.arguments['categories'] ?? [];
+    selectedCategory = Get.arguments['selectedCategory'] ?? 0;
     catId = Get.arguments['categoryId'];
-    getItems(catId!);
+    allCars = Get.arguments['cars'] ?? [];
+
+    if (catId != null) {
+      filterCarsByCategory(catId!);
+    }
   }
 
   @override
@@ -43,30 +42,46 @@ class CategoriesScreenControllerImp extends CategoriesScreenController {
   changeCategory(value, catVal) {
     selectedCategory = value;
     catId = catVal;
-    getItems(catId!);
-    update();
+    filterCarsByCategory(catVal);
   }
 
   @override
-  getItems(catId) async {
-    cars.clear();
+  filterCarsByCategory(int categoryId) {
     statusRequest = StatusRequest.loading;
     update();
-    var response = await categoriesData.getCarsCategories(catId);
-    // ignore: avoid_print
-    print('====================== Controller $response');
-    statusRequest = handlingApiResponse(response);
-    response.when(
-      success: (ApiSuccess<Map<String, dynamic>> successResponse) {
-        final responseData = successResponse.data;
-        if (responseData['status'] == true) {
-          cars.addAll(responseData['data']['cars']);
-        } else if (responseData['status'] == false) {
-          statusRequest = StatusRequest.failure;
+
+    int? parseId(dynamic value) {
+      if (value == null) return null;
+      return int.tryParse(value.toString());
+    }
+
+    final filteredCars = <dynamic>[];
+    if (allCars.isNotEmpty) {
+      for (final carData in allCars) {
+        if (carData is Map<String, dynamic>) {
+          int? carCategoryId;
+
+          final style = carData['style'];
+          if (style is Map<String, dynamic>) {
+            carCategoryId = parseId(style['id']);
+          } else {
+            carCategoryId = parseId(
+              carData['style_id'] ??
+                  carData['styleId'] ??
+                  carData['category_id'] ??
+                  carData['categoryId'],
+            );
+          }
+
+          if (carCategoryId == categoryId) {
+            filteredCars.add(carData);
+          }
         }
-      },
-      failure: (ApiFailure<Map<String, dynamic>> failureResponse) {},
-    );
+      }
+    }
+
+    cars = filteredCars;
+    statusRequest = StatusRequest.success;
     update();
   }
 

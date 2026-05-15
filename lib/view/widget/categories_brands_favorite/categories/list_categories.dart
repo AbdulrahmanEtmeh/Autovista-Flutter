@@ -12,17 +12,19 @@ class ListCategories extends GetView<CategoriesScreenControllerImp> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: Get.height * 0.05,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemCount: controller.carCategories.length,
-        separatorBuilder: (context, index) =>
-            SizedBox(width: Get.width * 0.025),
-        itemBuilder: (context, index) => Categories(
-          selectedCategory: index,
-          carCategoriesModel:
-              CarCategoriesModel.fromJson(controller.carCategories[index]),
+    return GetBuilder<CategoriesScreenControllerImp>(
+      builder: (controller) => SizedBox(
+        height: Get.height * 0.05,
+        child: ListView.separated(
+          scrollDirection: Axis.horizontal,
+          itemCount: controller.carCategories.length,
+          separatorBuilder: (context, index) =>
+              SizedBox(width: Get.width * 0.025),
+          itemBuilder: (context, index) => Categories(
+            selectedCategory: index,
+            carCategoriesModel:
+                CarCategoriesModel.fromJson(controller.carCategories[index]),
+          ),
         ),
       ),
     );

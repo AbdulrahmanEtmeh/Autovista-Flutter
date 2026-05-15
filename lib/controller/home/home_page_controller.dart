@@ -168,6 +168,7 @@ class HomePageControllerImp extends HomePageController {
         'categories': categories,
         'selectedCategory': selectedCategory,
         'categoryId': categoryId,
+        'cars': cars,
       },
     );
   }
@@ -178,6 +179,7 @@ class HomePageControllerImp extends HomePageController {
       'carBrands': brands,
       'selectedBrand': selectedBrand,
       'brandId': brandId,
+      'cars': cars,
     });
   }
 
