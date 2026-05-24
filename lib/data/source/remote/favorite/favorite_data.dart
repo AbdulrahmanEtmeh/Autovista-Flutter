@@ -1,32 +1,27 @@
 import 'package:graduation_project/core/constant/app_links.dart';
-
-import '../../../../core/class/crud.dart';
+import 'package:graduation_project/core/network/api_client.dart';
+import 'package:graduation_project/core/network/api_response.dart';
 
 class FavoriteData {
-  Crud crud;
-  FavoriteData(this.crud);
+  final ApiClient apiClient;
+  FavoriteData(this.apiClient);
 
-  addFavorite(int carId) async {
-    var response = await crud.postDataHeader(
-      AppLinks.favoriteAdd,
-      {
-        'carId': carId.toString(),
-      },
+  Future<ApiResponse<Map<String, dynamic>>> addFavorite(int carId) async {
+    return apiClient.post(
+      "${AppLinks.favoriteToggle}/${carId.toString()}",
+      {},
+      authenticated: true,
     );
-    return response.fold((l) => l, (r) => r);
   }
 
-  removeFavorite(int carId) async {
-    var response = await crud.deleteHeader(
-      "${AppLinks.deleteFromFavorite}/${carId.toString()}",
-    );
-    return response.fold((l) => l, (r) => r);
+  Future<ApiResponse<Map<String, dynamic>>> removeFavorite(int carId) async {
+    return addFavorite(carId);
   }
 
-  getFavoriteList(int userId) async {
-    var response = await crud.getDataHeader(
-      AppLinks.favoriteView,
+  Future<ApiResponse<Map<String, dynamic>>> getFavoriteList(int userId) async {
+    return apiClient.get(
+      AppLinks.favoriteViewPaged,
+      authenticated: true,
     );
-    return response.fold((l) => l, (r) => r);
   }
 }

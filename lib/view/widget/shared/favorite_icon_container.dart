@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../controller/favorite/favorite_controller.dart';
+import '../../../controller/favorite/my_favorite_controller.dart';
 import '../../../core/constant/app_colors.dart';
 import '../../../data/model/car_model.dart';
 
@@ -30,7 +31,25 @@ class FavoriteIconContainer extends StatelessWidget {
                 onPressed: () {
                   if (controller.isFavorite[carModel.id] == 1) {
                     controller.setFavorite(carModel.id!, 0);
-                    controller.removeFavorite(carModel.id!);
+
+                    // If this car is currently rendered from favorites list,
+                    // remove it through MyFavoriteController so UI updates now.
+                    final hasFavoriteController =
+                        Get.isRegistered<MyFavoriteController>();
+                    if (hasFavoriteController) {
+                      final myFavoriteController =
+                          Get.find<MyFavoriteController>();
+                      final existsInFavorites = myFavoriteController.data
+                          .any((element) => element.id == carModel.id);
+
+                      if (existsInFavorites) {
+                        myFavoriteController.deleteFromFavorite(carModel.id!);
+                      } else {
+                        controller.removeFavorite(carModel.id!);
+                      }
+                    } else {
+                      controller.removeFavorite(carModel.id!);
+                    }
                   } else {
                     controller.setFavorite(carModel.id!, 1);
                     controller.addFavorite(carModel.id!);

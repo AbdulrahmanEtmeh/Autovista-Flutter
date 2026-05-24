@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:graduation_project/core/class/status_request.dart';
+import 'package:graduation_project/core/network/api_response.dart';
 import 'package:graduation_project/core/services/my_services.dart';
 import 'package:graduation_project/data/model/car_model.dart';
 
@@ -17,25 +18,34 @@ class MyFavoriteController extends GetxController {
   getData() async {
     data.clear();
     statusRequest = StatusRequest.loading;
-    // update();
+    update();
     var response = await favoriteData.getFavoriteList(
       myServices.sharedPreferences.getInt('id')!,
     );
-    statusRequest = handlingData(response);
-    if (StatusRequest.success == statusRequest) {
-      if (response['status'] == true) {
-        List responseData = response['data'][0];
-        data.addAll(responseData.map((e) => CarModel.fromJson(e)));
-      } else if (response['status'] == false) {
-        statusRequest = StatusRequest.failure;
-      }
-    }
+    statusRequest = handlingApiResponse(response);
+    response.when(
+      success: (ApiSuccess<Map<String, dynamic>> successResponse) {
+        final responseData = successResponse.data;
+        if (responseData['status'] == true) {
+          final rawData = responseData['data'];
+          final favoriteCars = rawData is List ? rawData : <dynamic>[];
+
+          data.addAll(
+            favoriteCars
+                .whereType<Map<String, dynamic>>()
+                .map((e) => CarModel.fromJson(e)),
+          );
+        } else if (responseData['status'] == false) {
+          statusRequest = StatusRequest.failure;
+        }
+      },
+      failure: (ApiFailure<Map<String, dynamic>> failureResponse) {},
+    );
     update();
   }
 
-  deleteFromFavorite(int carId) {
-    // ignore: unused_local_variable
-    var response = favoriteData.removeFavorite(carId);
+  deleteFromFavorite(int carId) async {
+    await favoriteData.removeFavorite(carId);
     data.removeWhere((element) => element.id == carId);
     update();
   }

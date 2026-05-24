@@ -29,9 +29,11 @@ class AppLinks {
   static const String brands = '$server/brands';
   static const String brandDetails = '$server/brands';
   // ======================= Favorite ============================
-  static const String favoriteAdd = '$server/favorites';
+  static const String favoriteToggle = '$server/favorites/toggle';
+  static const String favoriteAdd = favoriteToggle;
   static const String favoriteView = '$server/favorites';
-  static const String deleteFromFavorite = '$server/favorites';
+  static const String favoriteViewPaged = '$server/favorites?per_page=10';
+  static const String deleteFromFavorite = favoriteToggle;
   // ====================== Car Parts ============================
   static const String carPartsBrands = '$server/brands';
   static const String carPartsCategories = '$server/parts/categories';
