@@ -25,17 +25,36 @@ class CarPartsItemsModel {
       this.photos});
 
   CarPartsItemsModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    partCategoryId = json['part_category_id'];
-    brandId = json['brand_id'];
-    brandName = json['brand_name'];
-    price = json['price'];
-    partNumber = json['part_number'];
-    categoryName = json['category_name'];
-    fitsCar = json['fits_car'];
-    yearCar = json['year_car'];
-    photos = json['photos'].cast<String>();
+    int? parseInt(dynamic value) {
+      if (value == null) return null;
+      return int.tryParse(value.toString());
+    }
+
+    String? parseString(dynamic value) {
+      if (value == null) return null;
+      final text = value.toString().trim();
+      return text.isEmpty ? null : text;
+    }
+
+    id = parseInt(json['id']);
+    name = parseString(json['name']);
+    partCategoryId =
+        parseInt((json['category'] as Map<String, dynamic>?)?['id']);
+    brandId = parseInt((json['brand'] as Map<String, dynamic>?)?['id']);
+    brandName = parseString((json['brand'] as Map<String, dynamic>?)?['name']);
+    price = parseString(json['price']);
+    partNumber = parseString(json['part_number']);
+    categoryName =
+        parseString((json['category'] as Map<String, dynamic>?)?['name']);
+    fitsCar = parseString(json['fits_cars'] ?? json['fits_car']);
+    yearCar = parseInt(json['car_year'] ?? json['year_car']);
+
+    final images = json['images'] ?? json['photos'];
+    if (images is List) {
+      photos = images.map((e) => e.toString()).toList();
+    } else {
+      photos = [];
+    }
   }
 
   Map<String, dynamic> toJson() {

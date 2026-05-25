@@ -36,8 +36,9 @@ class AppLinks {
   static const String deleteFromFavorite = favoriteToggle;
   // ====================== Car Parts ============================
   static const String carPartsBrands = '$server/brands';
-  static const String carPartsCategories = '$server/parts/categories';
-  static const String carPartsItems = '$server/parts/brands';
+  static const String carPartsCategories = '$server/categories?per_page=10';
+  static const String carPartsItemsBase = '$server/parts';
+  static const String carPartsItems = '$server/parts?per_page=10';
   // ====================== Cart ================================
   static const String cartAdd = '$server/cart';
   static const String cartRemove = '$server/cart';

@@ -12,8 +12,23 @@ class ContentContainer extends StatelessWidget {
 
   const ContentContainer({super.key, required this.carPartsItemsModel});
 
+  String _resolveImageUrl() {
+    final images = carPartsItemsModel.photos;
+    if (images == null || images.isEmpty) {
+      return '';
+    }
+
+    final first = images.first.trim();
+    if (first.startsWith('http://') || first.startsWith('https://')) {
+      return first.replaceFirst('http://', 'https://');
+    }
+
+    return '${AppLinks.imageRoot}/$first';
+  }
+
   @override
   Widget build(BuildContext context) {
+    final imageUrl = _resolveImageUrl();
     return Container(
       decoration: BoxDecoration(
         color: AppColors.homeContainers,
@@ -32,12 +47,16 @@ class ContentContainer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
-              child: CachedNetworkImage(
-                imageUrl:
-                    '${AppLinks.imageRoot}/${carPartsItemsModel.photos![0]}',
-                height: constraints.maxHeight * 0.5,
-                width: constraints.maxWidth * 0.25,
-              ),
+              child: imageUrl.isEmpty
+                  ? const Icon(Icons.image_not_supported)
+                  : CachedNetworkImage(
+                      imageUrl: imageUrl,
+                      height: constraints.maxHeight * 0.5,
+                      width: constraints.maxWidth * 0.25,
+                      fit: BoxFit.contain,
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.image_not_supported),
+                    ),
             ),
             SizedBox(width: constraints.maxWidth * 0.025),
             Column(

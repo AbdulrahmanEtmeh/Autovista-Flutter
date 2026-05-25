@@ -1,28 +1,42 @@
 import 'package:graduation_project/core/constant/app_links.dart';
-
-import '../../../../core/class/crud.dart';
+import 'package:graduation_project/core/network/api_client.dart';
+import 'package:graduation_project/core/network/api_response.dart';
 
 class CarPartsData {
-  Crud crud;
-  CarPartsData(this.crud);
-  getBrands() async {
-    var response = await crud.getDataHeader(
+  final ApiClient apiClient;
+  CarPartsData(this.apiClient);
+
+  Future<ApiResponse<Map<String, dynamic>>> getBrands() async {
+    return apiClient.get(
       AppLinks.carPartsBrands,
+      authenticated: true,
     );
-    return response.fold((l) => l, (r) => r);
   }
 
-  getCarPartsCategories() async {
-    var response = await crud.getDataHeader(
+  Future<ApiResponse<Map<String, dynamic>>> getCarPartsCategories() async {
+    return apiClient.get(
       AppLinks.carPartsCategories,
+      authenticated: true,
     );
-    return response.fold((l) => l, (r) => r);
   }
 
-  getCarPartsItems(int brandId, int categoryId) async {
-    var response = await crud.getDataHeader(
-      "${AppLinks.carPartsItems}/${brandId.toString()}/categories/${categoryId.toString()}",
+  Future<ApiResponse<Map<String, dynamic>>> getCarPartsItems([
+    int? brandId,
+    int? categoryId,
+  ]) async {
+    final queryParts = <String>['per_page=10'];
+    if (brandId != null) {
+      queryParts.add('brand_id=${brandId.toString()}');
+    }
+    if (categoryId != null) {
+      queryParts.add('category_id=${categoryId.toString()}');
+    }
+
+    final url = '${AppLinks.carPartsItemsBase}?${queryParts.join('&')}';
+
+    return apiClient.get(
+      url,
+      authenticated: true,
     );
-    return response.fold((l) => l, (r) => r);
   }
 }

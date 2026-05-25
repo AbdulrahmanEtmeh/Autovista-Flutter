@@ -8,14 +8,19 @@ class CarPartsCategoryModel {
   CarPartsCategoryModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
-    photos = json['photos'].cast<String>();
+    final imagesRaw = json['images'] ?? json['photos'];
+    if (imagesRaw is List) {
+      photos = imagesRaw.map((e) => e.toString()).toList();
+    } else {
+      photos = [];
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
-    data['photos'] = photos;
+    data['images'] = photos;
     return data;
   }
 }

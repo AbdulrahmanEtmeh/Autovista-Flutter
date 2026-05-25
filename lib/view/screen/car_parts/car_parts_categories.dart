@@ -12,6 +12,9 @@ class CarPartsCategories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (Get.isRegistered<CarPartsCategoriesControllerImp>()) {
+      Get.delete<CarPartsCategoriesControllerImp>(force: true);
+    }
     CarPartsCategoriesControllerImp controller =
         Get.put(CarPartsCategoriesControllerImp());
     return Scaffold(
