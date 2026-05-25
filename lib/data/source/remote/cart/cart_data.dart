@@ -1,31 +1,44 @@
 import 'package:graduation_project/core/constant/app_links.dart';
-
-import '../../../../core/class/crud.dart';
+import 'package:graduation_project/core/network/api_client.dart';
+import 'package:graduation_project/core/network/api_response.dart';
 
 class CartData {
-  Crud crud;
-  CartData(this.crud);
-  addCart(int partId) async {
-    var response = await crud.postDataHeader(
+  final ApiClient apiClient;
+  CartData(this.apiClient);
+
+  Future<ApiResponse<Map<String, dynamic>>> addCart(
+    int partId, {
+    int quantity = 1,
+  }) async {
+    return apiClient.post(
       AppLinks.cartAdd,
       {
-        'partId': partId.toString(),
+        'quantity': quantity,
+        'part_id': partId,
       },
+      authenticated: true,
+      isJson: true,
     );
-    return response.fold((l) => l, (r) => r);
   }
 
-  removeCart(int partId) async {
-    var response = await crud.deleteHeader(
+  Future<ApiResponse<Map<String, dynamic>>> removeCart(int partId) async {
+    return apiClient.delete(
       "${AppLinks.cartRemove}/${partId.toString()}",
+      authenticated: true,
     );
-    return response.fold((l) => l, (r) => r);
   }
 
-  getCartItems() async {
-    var response = await crud.getDataHeader(
+  Future<ApiResponse<Map<String, dynamic>>> getCartItems() async {
+    return apiClient.get(
       AppLinks.cartView,
+      authenticated: true,
     );
-    return response.fold((l) => l, (r) => r);
+  }
+
+  Future<ApiResponse<Map<String, dynamic>>> clearCart() async {
+    return apiClient.delete(
+      AppLinks.cartClear,
+      authenticated: true,
+    );
   }
 }

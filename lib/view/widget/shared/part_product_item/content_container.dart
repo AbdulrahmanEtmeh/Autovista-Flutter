@@ -19,8 +19,12 @@ class ContentContainer extends StatelessWidget {
     }
 
     final first = images.first.trim();
+    if (first.isEmpty) {
+      return '';
+    }
+
     if (first.startsWith('http://') || first.startsWith('https://')) {
-      return first.replaceFirst('http://', 'https://');
+      return first;
     }
 
     return '${AppLinks.imageRoot}/$first';
@@ -29,6 +33,7 @@ class ContentContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final imageUrl = _resolveImageUrl();
+    final hasQuantity = (carPartsItemsModel.quantity ?? 0) > 0;
     return Container(
       decoration: BoxDecoration(
         color: AppColors.homeContainers,
@@ -38,7 +43,7 @@ class ContentContainer extends StatelessWidget {
           width: 1,
         ),
       ),
-      height: Get.height * 0.225,
+      height: Get.height * (hasQuantity ? 0.27 : 0.225),
       padding: EdgeInsets.symmetric(
           horizontal: Get.width * 0.025, vertical: Get.height * 0.02),
       child: LayoutBuilder(
@@ -59,47 +64,51 @@ class ContentContainer extends StatelessWidget {
                     ),
             ),
             SizedBox(width: constraints.maxWidth * 0.025),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: constraints.maxHeight * 0.125,
-                  width: constraints.maxWidth * 0.65,
-                  child: FittedBox(
-                    child: Text(
-                      carPartsItemsModel.name!,
-                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          color: AppColors.primaryRed,
-                          fontWeight: FontWeight.bold),
-                    ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    carPartsItemsModel.name ?? 'Part',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                        color: AppColors.primaryRed,
+                        fontWeight: FontWeight.bold),
                   ),
-                ),
-                PartsRichText(
-                  title: 'Price'.tr,
-                  value: '\$ ${carPartsItemsModel.price!}',
-                  constraints: constraints,
-                ),
-                PartsRichText(
-                  title: 'Part number:'.tr,
-                  value: carPartsItemsModel.partNumber!,
-                  constraints: constraints,
-                ),
-                PartsRichText(
-                  title: 'Category name:'.tr,
-                  value: carPartsItemsModel.categoryName!,
-                  constraints: constraints,
-                ),
-                PartsRichText(
-                  title: 'Fits:'.tr,
-                  value: carPartsItemsModel.fitsCar!,
-                  constraints: constraints,
-                ),
-                PartsRichText(
-                  title: 'Year:'.tr,
-                  value: '${carPartsItemsModel.yearCar!}',
-                  constraints: constraints,
-                ),
-              ],
+                  PartsRichText(
+                    title: 'Price: '.tr,
+                    value: '\$ ${carPartsItemsModel.price ?? '0'}',
+                    constraints: constraints,
+                  ),
+                  if (hasQuantity)
+                    PartsRichText(
+                      title: 'Quantity: '.tr,
+                      value: '${carPartsItemsModel.quantity}',
+                      constraints: constraints,
+                    ),
+                  PartsRichText(
+                    title: 'Part number: '.tr,
+                    value: carPartsItemsModel.partNumber ?? '-',
+                    constraints: constraints,
+                  ),
+                  PartsRichText(
+                    title: 'Category name: '.tr,
+                    value: carPartsItemsModel.categoryName ?? '-',
+                    constraints: constraints,
+                  ),
+                  PartsRichText(
+                    title: 'Fits: '.tr,
+                    value: carPartsItemsModel.fitsCar ?? '-',
+                    constraints: constraints,
+                  ),
+                  PartsRichText(
+                    title: 'Year: '.tr,
+                    value: carPartsItemsModel.yearCar?.toString() ?? '-',
+                    constraints: constraints,
+                  ),
+                ],
+              ),
             ),
           ],
         ),

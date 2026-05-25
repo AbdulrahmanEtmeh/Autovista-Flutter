@@ -15,24 +15,29 @@ class PartsRichText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: constraints.maxHeight * 0.02),
-      child: RichText(
-        text: TextSpan(children: <TextSpan>[
-          TextSpan(
-            text: title,
-            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                  color: AppColors.carDetailsGrey,
-                  fontWeight: FontWeight.w500,
-                ),
-          ),
-          TextSpan(
-            text: value,
-            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                  color: AppColors.primaryWhite,
-                  fontWeight: FontWeight.w500,
-                ),
-          )
-        ]),
+      padding: EdgeInsets.only(top: constraints.maxHeight * 0.012),
+      child: SizedBox(
+        width: constraints.maxWidth * 0.65,
+        child: RichText(
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          text: TextSpan(children: <TextSpan>[
+            TextSpan(
+              text: title,
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    color: AppColors.carDetailsGrey,
+                    fontWeight: FontWeight.w500,
+                  ),
+            ),
+            TextSpan(
+              text: value,
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    color: AppColors.primaryWhite,
+                    fontWeight: FontWeight.w500,
+                  ),
+            )
+          ]),
+        ),
       ),
     );
   }

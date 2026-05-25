@@ -43,6 +43,7 @@ class AppLinks {
   static const String cartAdd = '$server/cart';
   static const String cartRemove = '$server/cart';
   static const String cartView = '$server/cart';
+  static const String cartClear = '$server/cart/clear';
   // ====================== Serach & Filter ==============================
   static const String filter = '$server/search';
   static const String homeSearch = '$server/home?search=';

@@ -110,6 +110,49 @@ class ApiClient {
     }
   }
 
+  Future<ApiResponse<Map<String, dynamic>>> delete(
+    String url, {
+    bool authenticated = false,
+  }) async {
+    try {
+      final hasInternet = await checkInternet();
+      if (hasInternet != true) {
+        print('[ApiClient] No internet connection');
+        return const ApiFailure(statusRequest: StatusRequest.offlineFailure);
+      }
+
+      print('[ApiClient] DELETE $url');
+
+      final response = await http
+          .delete(Uri.parse(url),
+              headers: _headers(authenticated: authenticated))
+          .timeout(const Duration(seconds: 30));
+
+      print('[ApiClient] Status Code: ${response.statusCode}');
+      print(
+          '[ApiClient] Raw Response (first 500 chars): ${response.body.substring(0, response.body.length > 500 ? 500 : response.body.length)}');
+
+      final responseBody = _decodeBody(response.body);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return ApiSuccess(responseBody, statusCode: response.statusCode);
+      }
+
+      return ApiFailure(
+        statusRequest: _mapStatusCode(response.statusCode),
+        message: responseBody['message']?.toString(),
+        statusCode: response.statusCode,
+        error: responseBody,
+      );
+    } catch (error) {
+      print('[ApiClient] Exception: $error');
+      return ApiFailure(
+        statusRequest: StatusRequest.serverException,
+        error: error,
+      );
+    }
+  }
+
   Map<String, dynamic> _decodeBody(String body) {
     if (body.isEmpty) {
       return <String, dynamic>{};

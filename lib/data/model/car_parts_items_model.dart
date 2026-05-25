@@ -1,6 +1,8 @@
 class CarPartsItemsModel {
   int? id;
   String? name;
+  int? quantity;
+  double? totalPartPrice;
   int? partCategoryId;
   int? brandId;
   String? brandName;
@@ -14,6 +16,8 @@ class CarPartsItemsModel {
   CarPartsItemsModel(
       {this.id,
       this.name,
+      this.quantity,
+      this.totalPartPrice,
       this.partCategoryId,
       this.brandId,
       this.brandName,
@@ -36,24 +40,76 @@ class CarPartsItemsModel {
       return text.isEmpty ? null : text;
     }
 
-    id = parseInt(json['id']);
-    name = parseString(json['name']);
-    partCategoryId =
-        parseInt((json['category'] as Map<String, dynamic>?)?['id']);
-    brandId = parseInt((json['brand'] as Map<String, dynamic>?)?['id']);
-    brandName = parseString((json['brand'] as Map<String, dynamic>?)?['name']);
-    price = parseString(json['price']);
-    partNumber = parseString(json['part_number']);
-    categoryName =
-        parseString((json['category'] as Map<String, dynamic>?)?['name']);
-    fitsCar = parseString(json['fits_cars'] ?? json['fits_car']);
-    yearCar = parseInt(json['car_year'] ?? json['year_car']);
+    double? parseDouble(dynamic value) {
+      if (value == null) return null;
+      return double.tryParse(value.toString());
+    }
 
-    final images = json['images'] ?? json['photos'];
-    if (images is List) {
-      photos = images.map((e) => e.toString()).toList();
-    } else {
-      photos = [];
+    String? parseStringList(dynamic value) {
+      if (value == null) return null;
+      if (value is List) {
+        final values = value
+            .map((e) {
+              if (e is Map<String, dynamic>) {
+                return parseString(
+                    e['name'] ?? e['model'] ?? e['car_model'] ?? e['value']);
+              }
+              return parseString(e);
+            })
+            .whereType<String>()
+            .toList();
+        if (values.isEmpty) return null;
+        return values.join(', ');
+      }
+      return parseString(value);
+    }
+
+    Map<String, dynamic> asMap(dynamic value) {
+      return value is Map<String, dynamic> ? value : <String, dynamic>{};
+    }
+
+    List<String> parseImages(dynamic value) {
+      if (value is! List) return <String>[];
+      return value.map((e) => e.toString()).toList();
+    }
+
+    final part = asMap(json['part']);
+    final category = asMap(part['category']).isNotEmpty
+        ? asMap(part['category'])
+        : asMap(json['category']);
+    final brand = asMap(part['brand']).isNotEmpty
+        ? asMap(part['brand'])
+        : asMap(json['brand']);
+
+    id = parseInt(part['id'] ?? json['part_id'] ?? json['id']);
+    name = parseString(part['name'] ?? json['name']);
+    quantity = parseInt(json['quantity']);
+    totalPartPrice = parseDouble(json['total_part_price']);
+    partCategoryId = parseInt(category['id'] ?? part['part_category_id']);
+    brandId = parseInt(brand['id'] ?? part['brand_id']);
+    brandName = parseString(brand['name'] ?? part['brand_name']);
+    price = parseString(json['price'] ?? part['price']);
+    partNumber = parseString(json['part_number'] ?? part['part_number']);
+    categoryName = parseString(
+        json['category_name'] ?? category['name'] ?? part['category_name']);
+    fitsCar = parseStringList(
+      json['fits_cars'] ??
+          json['fits_car'] ??
+          part['fits_cars'] ??
+          part['fits_car'] ??
+          part['car'],
+    );
+    yearCar = parseInt(
+      json['car_year'] ??
+          json['year_car'] ??
+          part['car_year'] ??
+          part['year_car'] ??
+          part['year'],
+    );
+
+    photos = parseImages(json['images'] ?? json['photos']);
+    if (photos!.isEmpty) {
+      photos = parseImages(part['images'] ?? part['photos']);
     }
   }
 
@@ -61,6 +117,8 @@ class CarPartsItemsModel {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
+    data['quantity'] = quantity;
+    data['total_part_price'] = totalPartPrice;
     data['part_category_id'] = partCategoryId;
     data['brand_id'] = brandId;
     data['brand_name'] = brandName;

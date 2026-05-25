@@ -30,14 +30,16 @@ class CartScreen extends StatelessWidget {
                 children: [
                   GetBuilder<MyCartController>(
                     builder: (controller) => Text(
-                      'Items (${controller.data.length})',
+                      'Items (${controller.totalItems})',
                       style: Theme.of(context)
                           .textTheme
                           .titleLarge!
                           .copyWith(color: AppColors.primaryWhite),
                     ),
                   ),
-                  ClearCartButton(onPressed: () {}),
+                  ClearCartButton(onPressed: () {
+                    controller.clearCart();
+                  }),
                 ],
               ),
               SizedBox(height: Get.height * 0.01),
@@ -86,7 +88,6 @@ class CartScreen extends StatelessWidget {
               MainButton(
                   buttonText: 'Buy Now',
                   onPressed: () {
-                    controller.moveToPayment();
                     controller.moveToPayment();
                   },
                   height: Get.height * 0.065,
