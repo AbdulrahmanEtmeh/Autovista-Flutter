@@ -56,8 +56,21 @@ class SearchScreenControllerImp extends SearchScreenController {
         final responseData = successResponse.data;
         if (responseData['status'] == true) {
           listCars.clear();
-          List responseBody = responseData['data']['cars'];
-          listCars.addAll(responseBody.map((e) => CarModel.fromJson(e)));
+          final payload = responseData['data'];
+          List<dynamic> responseBody = [];
+          if (payload is List) {
+            responseBody = payload;
+          } else if (payload is Map<String, dynamic>) {
+            final nestedCars = payload['cars'];
+            if (nestedCars is List) {
+              responseBody = nestedCars;
+            }
+          }
+          listCars.addAll(
+            responseBody
+                .whereType<Map<String, dynamic>>()
+                .map((e) => CarModel.fromJson(e)),
+          );
         } else if (responseData['status'] == false) {
           statusRequest = StatusRequest.failure;
         }

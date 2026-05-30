@@ -8,28 +8,32 @@ class FilterData {
   FilterData(this.apiClient);
 
   Future<ApiResponse<Map<String, dynamic>>> getData(
-    String brandName,
-    String name,
-    String gearType,
-    String styleName,
-    int capacity,
-    List cylinders,
-    int rent,
+    Map<String, dynamic> filters,
   ) async {
-    final body = {
-      'brandName': brandName,
-      'name': name,
-      'gearType': gearType,
-      'styleName': styleName,
-      'capacity': capacity.toString(),
-      'cylinders': cylinders,
-      'rent': rent.toString(),
-    };
+    final queryParts = <String>['per_page=10'];
 
-    return apiClient.post(
-      AppLinks.filter,
-      body,
-      isJson: true,
+    void addParam(String key, dynamic value) {
+      if (value == null) return;
+      final text = value.toString().trim();
+      if (text.isEmpty) return;
+      queryParts.add(
+          '${Uri.encodeQueryComponent(key)}=${Uri.encodeQueryComponent(text)}');
+    }
+
+    addParam('search', filters['search']);
+    addParam('gear_type', filters['gear_type']);
+    addParam('is_rent', filters['is_rent']);
+    addParam('brand_id', filters['brand_id']);
+    addParam('style_id', filters['style_id']);
+    addParam('cylinders', filters['cylinders']);
+    addParam('capacity', filters['capacity']);
+    addParam('color', filters['color']);
+    addParam('price', filters['price']);
+
+    final url = '${AppLinks.cars}?${queryParts.join('&')}';
+
+    return apiClient.get(
+      url,
       authenticated: true,
     );
   }

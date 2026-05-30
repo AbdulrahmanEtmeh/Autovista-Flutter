@@ -6,8 +6,6 @@ import 'package:graduation_project/view/widget/shared/custom_text_field.dart';
 import 'package:graduation_project/view/widget/shared/field_title.dart';
 
 import '../../../core/class/enums/transmission_type.dart';
-import '../../../data/model/car_brands_model.dart';
-import '../../../data/model/car_categories_model.dart';
 import '../../widget/search/filter/filter_button.dart';
 import '../../widget/search/filter/filter_check_box.dart';
 import '../../widget/search/filter/filter_radio_list.dart';
@@ -54,19 +52,21 @@ class FilterScreen extends StatelessWidget {
               ),
               SizedBox(height: Get.height * 0.025),
               FieldTitle(text: 'Car Brand'.tr),
-              CustomDropDownField(
-                onChanged: (val) {
-                  controller.changeBrand(val);
-                },
-                value: controller.selectedBrand,
-                items: Brands.values.map((b) {
-                  return DropdownMenuItem(
-                    value: b,
-                    child: Text(
-                      b.title,
-                    ),
-                  );
-                }).toList(),
+              GetBuilder<FilterController>(
+                builder: (controller) => CustomDropDownField(
+                  onChanged: (val) {
+                    controller.changeBrand(val);
+                  },
+                  value: controller.selectedBrand,
+                  items: controller.brands.map((b) {
+                    return DropdownMenuItem<Object>(
+                      value: b,
+                      child: Text(
+                        b.name ?? '',
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
               FieldTitle(text: 'Car Name'.tr),
               CustomTextField(
@@ -74,34 +74,38 @@ class FilterScreen extends StatelessWidget {
                 hintText: 'car name ...',
               ),
               FieldTitle(text: 'Transmission Type'.tr),
-              CustomDropDownField(
-                onChanged: (val) {
-                  controller.changeTransmissionType(val);
-                },
-                value: controller.selectedTransmissionType,
-                items: TransmissionType.values.map((t) {
-                  return DropdownMenuItem(
-                    value: t,
-                    child: Text(
-                      t.title,
-                    ),
-                  );
-                }).toList(),
+              GetBuilder<FilterController>(
+                builder: (controller) => CustomDropDownField(
+                  onChanged: (val) {
+                    controller.changeTransmissionType(val);
+                  },
+                  value: controller.selectedTransmissionType,
+                  items: TransmissionType.values.map((t) {
+                    return DropdownMenuItem<Object>(
+                      value: t,
+                      child: Text(
+                        t.title,
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
               FieldTitle(text: 'Vehicle Style'.tr),
-              CustomDropDownField(
-                onChanged: (val) {
-                  controller.changeVehicleStyle(val);
-                },
-                value: controller.selectedVehicleStyle,
-                items: VehicleStyle.values.map((s) {
-                  return DropdownMenuItem(
-                    value: s,
-                    child: Text(
-                      s.title,
-                    ),
-                  );
-                }).toList(),
+              GetBuilder<FilterController>(
+                builder: (controller) => CustomDropDownField(
+                  onChanged: (val) {
+                    controller.changeVehicleStyle(val);
+                  },
+                  value: controller.selectedVehicleStyle,
+                  items: controller.styles.map((s) {
+                    return DropdownMenuItem<Object>(
+                      value: s,
+                      child: Text(
+                        s.name ?? '',
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
               FieldTitle(text: 'Capacity'.tr),
               FilterRadioList(

@@ -12,6 +12,10 @@ class SearchData {
   SearchData(this.apiClient);
 
   Future<ApiResponse<Map<String, dynamic>>> serachData(String search) async {
-    return apiClient.get("${AppLinks.homeSearch}$search", authenticated: true);
+    final value = search.trim();
+    final query = value.isEmpty
+        ? 'per_page=10'
+        : 'per_page=10&search=${Uri.encodeQueryComponent(value)}';
+    return apiClient.get('${AppLinks.cars}?$query', authenticated: true);
   }
 }
