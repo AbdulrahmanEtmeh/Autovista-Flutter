@@ -51,4 +51,5 @@ class AppLinks {
   // Price Prediction
   // static const String flaskServer = 'http://10.0.2.2:3000';
   static const String pricePrediction = 'http://10.0.2.2:3000/predict';
+  static const String baseUrl ="https://dev-projects.it.com/api";
 }
