@@ -12,6 +12,7 @@ class AppRoutes {
   static const String successResetPassword = '/successResetPassword';
   static const String successRegister = '/successRegister';
   static const String registerCheckEmail = '/registerCheckEmail';
+  static const updateCar = '/update-car';
   // Home
   static const String home = '/home';
   // Categories

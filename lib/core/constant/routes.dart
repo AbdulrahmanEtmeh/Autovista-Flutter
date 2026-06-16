@@ -23,10 +23,11 @@ import 'package:graduation_project/view/screen/on_boarding_screen.dart';
 import 'package:graduation_project/view/screen/payment_screen.dart';
 import 'package:graduation_project/view/screen/pricePrediction/price_prediction_screen.dart';
 import 'package:graduation_project/view/screen/search/search_screen.dart';
-import 'package:graduation_project/view/screen/settings/add_car_screen.dart';
+import 'package:graduation_project/view/screen/settings/addCars/add_car_screen.dart';
 import 'package:graduation_project/view/screen/settings/my_cars_screen.dart';
 import 'package:graduation_project/view/screen/settings/settings_screen.dart';
 import 'package:graduation_project/view/screen/search/filter_screen.dart';
+import 'package:graduation_project/view/screen/settings/updateCar/update_car_screen.dart';
 
 import '../../view/screen/search/filter_results_screen.dart';
 import '../middleware/my_middleware.dart';
@@ -172,4 +173,6 @@ List<GetPage> routes = [
     name: AppRoutes.chat,
     page: () => const ChatScreen(),
   ),
+GetPage(name: AppRoutes.updateCar, page: () => const UpdateCarScreen()),
+
 ];

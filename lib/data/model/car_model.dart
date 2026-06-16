@@ -70,47 +70,36 @@ class CarModel {
   });
 
   factory CarModel.fromJson(Map<String, dynamic> json) {
+    //  Helpers 
     int? parseInt(dynamic value) {
       if (value == null) return null;
       return int.tryParse(value.toString()) ??
           double.tryParse(value.toString())?.toInt();
     }
 
-    String? parseLocalizedText(dynamic value) {
-      String? clean(dynamic raw) {
-        final text = raw?.toString();
-        if (text == null ||
-            text.trim().isEmpty ||
-            text.toLowerCase() == 'null') {
-          return null;
-        }
-        return text;
+    String? clean(dynamic raw) {
+      final text = raw?.toString();
+      if (text == null ||
+          text.trim().isEmpty ||
+          text.toLowerCase() == 'null') {
+        return null;
       }
-
+      return text;
+    }
+    
+    String? parseLocalizedText(dynamic value) {
       final languageCode =
           (Get.locale?.languageCode ?? Get.deviceLocale?.languageCode ?? 'en')
               .toLowerCase();
       final preferArabic = languageCode.startsWith('ar');
 
+      
       if (value is Map<String, dynamic>) {
         final en = clean(value['en']);
         final ar = clean(value['ar']);
 
-        if (preferArabic) {
-          if (ar != null) return ar;
-          if (en != null) return en;
-        } else {
-          if (en != null) return en;
-          if (ar != null) return ar;
-        }
-
-        for (final entry in value.values) {
-          final text = clean(entry);
-          if (text != null) {
-            return text;
-          }
-        }
-        return null;
+        if (preferArabic) return ar ?? en;
+        return en ?? ar;
       }
 
       return clean(value);
@@ -140,24 +129,31 @@ class CarModel {
     }
 
     int? parseFavorite(Map<String, dynamic> source) {
-      if (source['is_favorite'] != null) {
-        return parseInt(source['is_favorite']);
-      }
-
+      if (source['is_favorite'] != null) return parseInt(source['is_favorite']);
       if (source['is_fav'] != null) {
-        if (source['is_fav'] is bool) {
-          return source['is_fav'] == true ? 1 : 0;
-        }
+        if (source['is_fav'] is bool) return source['is_fav'] == true ? 1 : 0;
         return parseInt(source['is_fav']);
       }
-
       return null;
     }
 
-    final owner = json['owner'] as Map<String, dynamic>?;
-    final offer = json['offer'] as Map<String, dynamic>?;
-    final brandRaw = json['brand'] as Map<String, dynamic>?;
-    final styleRaw = json['style'] as Map<String, dynamic>?;
+    //  Parse 
+
+    final owner = json['owner'] is Map<String, dynamic>
+        ? json['owner'] as Map<String, dynamic>
+        : null;
+
+    final offer = json['offer'] is Map<String, dynamic>
+        ? json['offer'] as Map<String, dynamic>
+        : null;
+
+    final brandRaw = json['brand'] is Map<String, dynamic>
+        ? json['brand'] as Map<String, dynamic>
+        : null;
+
+    final styleRaw = json['style'] is Map<String, dynamic>
+        ? json['style'] as Map<String, dynamic>
+        : null;
 
     return CarModel(
       id: parseInt(json['id']),
@@ -183,7 +179,8 @@ class CarModel {
       isRent: json['is_rent'] is bool
           ? json['is_rent'] as bool
           : json['is_rent'] != null
-              ? json['is_rent'].toString() == 'true'
+              ? json['is_rent'].toString() == 'true' ||
+                  json['is_rent'].toString() == '1'
               : null,
       brandId: parseInt(brandRaw?['id']),
       brand: parseNestedName(json['brand']),
