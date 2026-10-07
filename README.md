@@ -1,16 +1,21 @@
-# graduation_project
+# AutoVista
 
-A new Flutter project.
+AutoVista is a cross-platform car marketplace mobile application developed as a graduation project using Flutter.
 
-## Getting Started
+The application connects vehicle sellers with potential buyers, allowing sellers to list their vehicles and buyers to browse and search available cars.
 
-This project is a starting point for a Flutter application.
+## My Contribution
 
-A few resources to get you started if this is your first Flutter project:
+- Developed mobile application screens and features using Flutter and Dart.
+- Integrated REST APIs with the Laravel backend.
+- Contributed to application requirements and user workflows.
+- Contributed to interface design and implementation.
+- Used Git and GitHub for version control and collaboration.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Technologies
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Flutter
+- Dart
+- REST APIs
+- Git
+- GitHub
